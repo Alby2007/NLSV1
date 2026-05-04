@@ -1,0 +1,38 @@
+// Neuralese v1 Grammar — Lark definition
+// S-expression based, prefix notation, explicit arity
+
+start: expr
+
+expr: atom
+    | application
+    | abstraction
+    | assertion
+    | sequence
+
+application: "(" HEAD expr* ")"
+
+abstraction: "(" LAMBDA VAR ":" TYPE "." expr ")"
+
+assertion: "{" expr "|" CONF "}"
+
+sequence: "[" expr expr+ "]"
+
+atom: SYMBOL
+    | NUMBER
+    | variable
+    | bound_var
+
+variable: "#" VAR
+bound_var: VAR
+
+HEAD: /[A-Z][A-Z0-9_]*/
+SYMBOL: /[A-Z][A-Z0-9_]*/
+VAR: /[a-z][a-z0-9_]*/
+TYPE: /[A-Z][A-Za-z]*/
+LAMBDA: "λ"
+CONF: /0(\.\d+)?|1(\.0+)?/
+NUMBER: /[+-]?\d+(\.\d+)?/
+
+%import common.WS
+%ignore WS
+%ignore /;[^\n]*/

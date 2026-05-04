@@ -1,0 +1,4055 @@
+[
+  {
+    "symbol": "INTEGRAL_CALCULATION",
+    "arity": 1,
+    "domain": [
+      "NumericProperty"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "TIME_SERIES_ANALYSIS",
+    "arity": 3,
+    "domain": [
+      "TemporalRelation",
+      "NumericProperty",
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION_EQUIVALENCE",
+    "arity": 2,
+    "domain": [
+      "MathematicalExpression",
+      "Operator"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "MATHEMATICAL_CONCEPT_SQUARE_ROOT",
+    "arity": 1,
+    "domain": [
+      "NumericProperty"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "CALCULATION_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Logical",
+      "NumericProperty"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "DAILY_ROUTINE",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "DOCUMENT_PREPARATION",
+    "arity": 2,
+    "domain": [
+      "Logical",
+      "ConcreteEntity"
+    ],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "GET_CHANGE_OF_STATE",
+    "arity": 1,
+    "domain": [
+      "Property"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "QUANTITY_DISTRIBUTION",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "AbstractEntity"
+    ],
+    "range": "ConcreteEntity"
+  },
+  {
+    "symbol": "SHOW_PROOF_OR_REPRESENTATION",
+    "arity": 1,
+    "domain": [
+      "Logical"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "RANDOM_OPER_STOCHASTIC_EQUATIONS",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "Operator"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "OLYMPIC_PARTICIPATION",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "STRUCTURE_CONSTRUCTION",
+    "arity": 2,
+    "domain": [
+      "SpatialRelation",
+      "ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "LATEX_PACKAGE_INCLUSION",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION",
+    "arity": 0,
+    "domain": [],
+    "range": "Logical"
+  },
+  {
+    "symbol": "QUANTITY_COLLECTION_MANAGEMENT",
+    "arity": 1,
+    "domain": [
+      "NumericProperty"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "GEOGRAPHICAL_MUNICIPALITY_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity",
+      "ConcreteEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "DURATION_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Numeric|Entity",
+      "Numeric|Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "DISTANCE_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "SpatialRelation",
+      "AbstractEntity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "ALBUM_RELEASE",
+    "arity": 2,
+    "domain": [
+      "Entity|ConcreteEntity",
+      "Process"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "GET_RESULT",
+    "arity": 2,
+    "domain": [
+      "Numeric|Entity",
+      "Numeric|Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION",
+    "arity": 3,
+    "domain": [
+      "Numeric",
+      "Operator",
+      "LogicalRelation"
+    ],
+    "range": "NumericProperty"
+  },
+  {
+    "symbol": "LOGICAL_AND",
+    "arity": 2,
+    "domain": [
+      "Logical|LogicalRelation",
+      "Logical|LogicalRelation"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "DECISION_MAKING",
+    "arity": 1,
+    "domain": [
+      "Process"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "NUMERIC_COMPARISON",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "Comparator"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "USER_INTENT_ATTEMPT",
+    "arity": 1,
+    "domain": [
+      "Process"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "TIME_LIMIT_CLAIMING",
+    "arity": 2,
+    "domain": [
+      "TemporalRelation",
+      "Entity|ConcreteEntity"
+    ],
+    "range": "CausalRelation"
+  },
+  {
+    "symbol": "WRITTEN_WORK_CREATION",
+    "arity": 1,
+    "domain": [
+      "Process"
+    ],
+    "range": "SpatialRelation"
+  },
+  {
+    "symbol": "USUALLY_OCCURS_OR_IS_AVAILABLE",
+    "arity": 2,
+    "domain": [
+      "Entity|AbstractEntity",
+      "TemporalRelation"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "HUMAN_RELATIONSHIPS",
+    "arity": 2,
+    "domain": [
+      "Entity|ConcreteEntity",
+      "Entity|ConcreteEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "LATER_DEVELOPMENT",
+    "arity": 1,
+    "domain": [
+      "Process"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "STRUGGLING_WITH_CONCEPTS",
+    "arity": 2,
+    "domain": [
+      "Entity|ConcreteEntity",
+      "AbstractEntity"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "PROVE_STATEMENT",
+    "arity": 1,
+    "domain": [
+      "LogicalRelation"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "ALSO_KNOWN_AS_PATTERN",
+    "arity": 2,
+    "domain": [
+      "Entity|ConcreteEntity",
+      "AbstractEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PARENT_CHILD_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "Entity|ConcreteEntity",
+      "Entity|ConcreteEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "GENERAL_COMMUNICATION",
+    "arity": 1,
+    "domain": [
+      "Process"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "THROUGHOUT_THE_SERIES",
+    "arity": 2,
+    "domain": [
+      "TemporalRelation",
+      "Entity|AbstractEntity"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "ACADEMIC_DEGREE_EARNING",
+    "arity": 1,
+    "domain": [
+      "Process"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "MATHEMATICAL_SUMMATION",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "Entity|AbstractEntity"
+    ],
+    "range": "NumericProperty"
+  },
+  {
+    "symbol": "AS_WELL_AS",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SEMANTIC_RELATIONSHIP_PART_OF",
+    "arity": 2,
+    "domain": [
+      "Entity|AbstractEntity",
+      "Entity|AbstractEntity"
+    ],
+    "range": "CausalRelation"
+  },
+  {
+    "symbol": "COMPLETION_OF_EDUCATION_OR_TASK",
+    "arity": 1,
+    "domain": [
+      "Process"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SEQUENTIAL_ACTION",
+    "arity": 2,
+    "domain": [
+      "Process",
+      "Process"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SEQUENCE_ANALYSIS",
+    "arity": 1,
+    "domain": [
+      "Numeric|LogicalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "GENERIC_ACCOUNT_CREATION",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "SEEKING_METHODOLOGY",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION_OPTIMIZATION",
+    "arity": 1,
+    "domain": [
+      "MathematicalExpression"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "COMPETITION_PARTICIPATION",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ABSTRACT_CONCEPT_REPRESENTATION",
+    "arity": 2,
+    "domain": [
+      "LogicalRelation",
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "NEXT_EVENT",
+    "arity": 1,
+    "domain": [
+      "TemporalRelation|AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "PROPER_USAGE",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "APPLICATION_DEVELOPMENT",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "SEMANTIC_CONTEXT",
+    "arity": 2,
+    "domain": [
+      "LogicalRelation",
+      "Logical"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "FAMILY_MIGRATION_OR_DISPLACEMENT",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "VEHICLE_RELATED_CONCEPTS",
+    "arity": 1,
+    "domain": [
+      "PhysicalProcess"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "RECURSIVE_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Process",
+      "LogicalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "INVITATION_TO_CONTRIBUTE",
+    "arity": 1,
+    "domain": [
+      "Connective|AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "COMMERCE_TRANSACTIONS",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "STEP_BY_STEP_EXPLANATION",
+    "arity": 1,
+    "domain": [
+      "Process"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "TRYING_TO_PERFORM_TASK",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Process"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "GENERAL_CONTEXT_SWITCHING",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "USAGE_CONTEXT",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Process"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ABILITY_TO_PERFORM_TASK",
+    "arity": 1,
+    "domain": [
+      "Entity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "M_VAR_EVALUATION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Operator"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "ABSTRACT_SYNTAX_TREE",
+    "arity": 1,
+    "domain": [
+      "Entity|Process"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "NEW_MEMBER_RECOGNITION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "INVESTIGATE_STUDY_MATHEMATICAL_CONCEPTS",
+    "arity": 1,
+    "domain": [
+      "Entity|LogicalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "FINANCIAL_EXPENSE_TRACKING",
+    "arity": 2,
+    "domain": [
+      "Property",
+      "NumericProperty"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "NUMERICAL_TRANSFORMATION",
+    "arity": 1,
+    "domain": [
+      "Entity|Numeric"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "PURCHASE_EVENT",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Property"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "WRITTEN_EXPRESSION",
+    "arity": 1,
+    "domain": [
+      "LogicalRelation|CognitiveProcess"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ATTEMPT_TO_SOLVE",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Problem"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "COMPARATIVE_ANALYSIS",
+    "arity": 2,
+    "domain": [
+      "LogicalRelation|CognitiveProcess",
+      "LogicalRelation|CognitiveProcess"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "RESEARCH_AND_DEVELOPMENT",
+    "arity": 1,
+    "domain": [
+      "Entity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "HOLDING_POSITION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "BY_PROCESS",
+    "arity": 1,
+    "domain": [
+      "Entity|LogicalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MATHEMATICAL_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Operator"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "MATHEMATICAL_OPERATION",
+    "arity": 1,
+    "domain": [
+      "Entity|Property"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "PERSON_DIED",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "TemporalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "INITIAL_GREETING",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "TIME_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "TemporalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "GEOGRAPHICAL_LOCATION_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "ConcreteEntity|AbstractEntity",
+      "SpatialRelation"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONDITIONAL_STATEMENTS",
+    "arity": 1,
+    "domain": [
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "DEVELOP_AND_PROMOTE",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "Modal"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "CONTEXT_SWITCHING",
+    "arity": 1,
+    "domain": [
+      "CognitiveProcess"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "CALCULATE_TOTAL_NUMBER",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "LogicalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ACADEMIC_JOURNAL_MANAGEMENT",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "CONDITIONAL_JUMP",
+    "arity": 2,
+    "domain": [
+      "Logical",
+      "Modal"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "USE_FORMULA_TECHNIQUE",
+    "arity": 1,
+    "domain": [
+      "NumericProperty|QualitativeProperty"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION_ANALYSIS",
+    "arity": 1,
+    "domain": [
+      "LogicalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "EQUATION_SOLUTION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "LogicalRelation"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "SEE_REFERENCE",
+    "arity": 1,
+    "domain": [
+      "Entity|AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "FILE_CONVERSION_PROCESS",
+    "arity": 2,
+    "domain": [
+      "ConcreteEntity",
+      "Property"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "GREETING_RESPONSE_PATTERN",
+    "arity": 1,
+    "domain": [
+      "LogicalRelation|Connective"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "RELEASE_EVENT",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "TemporalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "TEXT_MANIPULATION",
+    "arity": 1,
+    "domain": [
+      "ConcreteEntity|AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "CITATION_REFERENCE",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "ConcreteEntity"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "CODE_REVIEW_AND_OPTIMIZATION",
+    "type": "Process",
+    "arity": 2,
+    "domain": [
+      "Code|Software",
+      "AbstractEntity"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "ORGANIZATION_FOUNDING",
+    "type": "Process",
+    "arity": 3,
+    "domain": [
+      "Organization|Institution",
+      "TemporalRelation",
+      "AbstractEntity"
+    ],
+    "range": "ConcreteEntity"
+  },
+  {
+    "symbol": "AREA_CALCULATION",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "SpatialRelation"
+    ],
+    "range": "NumericProperty"
+  },
+  {
+    "symbol": "ATMOSPHERIC_PHENOMENON",
+    "type": "Process",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity",
+      "PhysicalProcess"
+    ],
+    "range": "ConcreteEntity"
+  },
+  {
+    "symbol": "INSTITUTION_FOUNDATION_YEAR",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "TemporalRelation|Organization|Institution"
+    ],
+    "range": "Ordinal"
+  },
+  {
+    "symbol": "QUESTION_ANSWERING",
+    "type": "Process",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity",
+      "LogicalRelation"
+    ],
+    "range": "ConcreteEntity"
+  },
+  {
+    "symbol": "USING_TECHNIQUE_OR_TOOL",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "PhysicalProcess|CognitiveProcess"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "INFINITE_SERIES_SUMMATION",
+    "type": "Process",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "Operator"
+    ],
+    "range": "NumericProperty"
+  },
+  {
+    "symbol": "AFTER_CONSEQUENCE",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "TemporalRelation|CausalRelation"
+    ],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "LETS_SAY_CONCEPT_INTRODUCTION",
+    "type": "Process",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity",
+      "LogicalRelation"
+    ],
+    "range": "ConcreteEntity"
+  },
+  {
+    "symbol": "APPLICATIONS_OF_TECHNIQUES_TOOLS_AND_METHODS",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "PhysicalProcess|CognitiveProcess"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "TRAINING_INITIALIZATION",
+    "type": "Process",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity",
+      "NumericProperty"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "PROGRAMMING_AND_DEVELOPMENT",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "PhysicalProcess|CognitiveProcess"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "I_HAVE_PREFIX",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "TemporalRelation"
+    ],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "CONTEXTUAL_CONTINUATION",
+    "type": "Logical",
+    "arity": 0,
+    "domain": [],
+    "range": "ConcreteEntity"
+  },
+  {
+    "symbol": "SUPPOSE_CONTEXT",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "INTRODUCTION_OF_EXAMPLE_OR_SOLUTION",
+    "type": "Process",
+    "arity": 2,
+    "domain": [
+      "LogicalRelation",
+      "ConcreteEntity|AbstractEntity"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "WRITING_PROCESS",
+    "type": "Process",
+    "arity": 1,
+    "domain": [
+      "PhysicalProcess"
+    ],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "AGE_COMPARISON",
+    "type": "Relation",
+    "arity": 2,
+    "domain": [
+      "QualitativeProperty",
+      "QualitativeProperty"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "DESIRE_TO_ACQUIRE",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "Property|Process"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "AMBIGUOUS_REFERENCE",
+    "arity": 1,
+    "domain": [
+      "Entity|Concept"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_COMPUTATION",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "Operator"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "START_DATE_EVENT",
+    "arity": 1,
+    "domain": [
+      "Event|Project|Organization|Service"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "CUSTOMIZATION",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity",
+      "Property"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "HAS_SERVED_IN_POSITION",
+    "arity": 1,
+    "domain": [
+      "Position|Role"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "CONDITIONAL_CLAUSE",
+    "arity": 2,
+    "domain": [
+      "Condition",
+      "LogicalRelation"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "GENERAL_QUESTION_PATTERN",
+    "arity": 1,
+    "domain": [
+      "Task|Goal"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "PRESIDENTIAL_SUCCESSION",
+    "arity": 0,
+    "domain": [],
+    "range": "Event"
+  },
+  {
+    "symbol": "COMPARISON_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "Comparator"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXISTENCE_PROOF",
+    "arity": 1,
+    "domain": [
+      "MathematicalObject|Property"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "STRAIGHT_LINE_TRAVEL",
+    "arity": 2,
+    "domain": [
+      "Location",
+      "Direction"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "HISTORY_OF_EVENTS",
+    "arity": 1,
+    "domain": [
+      "Event|Period"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "PROFESSIONAL_ACTIVITY",
+    "arity": 1,
+    "domain": [
+      "LaborActivity|Occupation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SET_DIFFERENCE",
+    "arity": 2,
+    "domain": [
+      "Set",
+      "Subset"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "OVER_CONCEPT",
+    "arity": 1,
+    "domain": [
+      "Context|Entity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "UNIT_CONVERSION",
+    "arity": 2,
+    "domain": [
+      "Quantity",
+      "Unit"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "PROBLEM_IDENTIFICATION",
+    "arity": 1,
+    "domain": [
+      "Context|Issue"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SEQUENCE_REFERENCE",
+    "arity": 1,
+    "domain": [
+      "SequenceItem|Event"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "RECURSIVE_ENUMERATION",
+    "arity": 2,
+    "domain": [
+      "Element",
+      "Condition"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "BECAME_CONCEPT",
+    "arity": 3,
+    "domain": [
+      "Entity",
+      "Property",
+      "CognitiveProcess"
+    ],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "MATHEMATICAL_SUMMATION",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "TIME_PASSAGE",
+    "arity": 0,
+    "domain": [],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "MATHEMATICAL_FUNCTION",
+    "arity": 2,
+    "domain": [
+      "Numeric|AbstractEntity",
+      "Logical"
+    ],
+    "range": "Numeric|AbstractEntity"
+  },
+  {
+    "symbol": "SEQUENTIAL_PATTERN",
+    "arity": 1,
+    "domain": [
+      "Ordinal|Cardinal"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "HOW_TO_GUIDE",
+    "arity": 1,
+    "domain": [
+      "CognitiveProcess"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "SEQUENTIAL_ACTION",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "TemporalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "OR_CLAUSE_USAGE",
+    "arity": 2,
+    "domain": [
+      "Logical|Connective",
+      "LogicalRelation"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "NEEDS_TO_PERFORM_ACTION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Process"
+    ],
+    "range": "CausalRelation"
+  },
+  {
+    "symbol": "ATTEMPT_AT_SOLUTION",
+    "arity": 1,
+    "domain": [
+      "Problem|Question"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MUSICAL_INITIATION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "CognitiveProcess"
+    ],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "DIVISION_INTO_PARTS",
+    "arity": 1,
+    "domain": [
+      "ConcreteEntity|AbstractEntity"
+    ],
+    "range": "SpatialRelation"
+  },
+  {
+    "symbol": "CAUSE_OF_EVENT",
+    "arity": 2,
+    "domain": [
+      "Event",
+      "CausalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SUBATOMIC_DECAY_PROCESSES",
+    "arity": 1,
+    "domain": [
+      "PhysicalProcess|AbstractEntity"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "PLACE_NAMING_ORIGIN",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Property"
+    ],
+    "range": "SpatialRelation"
+  },
+  {
+    "symbol": "INTENTION_TO_PERFORM_ACTION",
+    "arity": 1,
+    "domain": [
+      "Process|AbstractEntity"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "MATRIX_OPERATION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Logical"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATHEMATICAL_FUNCTION",
+    "arity": 2,
+    "domain": [
+      "Entity|AbstractEntity",
+      "Process"
+    ],
+    "range": "ConcreteEntity|AbstractEntity"
+  },
+  {
+    "symbol": "SELF_REFLECTION",
+    "arity": 1,
+    "domain": [
+      "CognitiveProcess"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "LEARNING_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Property|Process"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "SEMANTIC_CONTEXT_EXAMPLE",
+    "arity": 3,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "Process",
+      "Logical"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "DECISION_MAKING_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Property|Relation",
+      "Modal"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SHORT_TIME_FOURIER_TRANSFORM",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SPORT_PARTICIPATION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "TemporalRelation|CausalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "QUANTITATIVE_REASONING",
+    "arity": 3,
+    "domain": [
+      "NumericProperty",
+      "LogicalRelation",
+      "Operator"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "BEGIN_CAREER_OR_ACTIVITY_AT_YOUNG_AGE",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "TemporalRelation|Ordinal"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "QUANTITY_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Numeric|Entity",
+      "Numeric|Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "COMMUNITY_ENGAGEMENT",
+    "arity": 3,
+    "domain": [
+      "ConcreteEntity",
+      "CognitiveProcess",
+      "Connective"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ABSTRACT_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|Property",
+      "LogicalRelation"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "HUMAN_BRAIN_AND_LANGUAGE",
+    "arity": 1,
+    "domain": [
+      "CognitiveProcess"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "EARLY_CAREER_START",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Ordinal|TemporalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "BUILD_PROCESS",
+    "arity": 3,
+    "domain": [
+      "Property|Logical",
+      "Entity",
+      "Connective"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "DATA_ENCODING",
+    "arity": 2,
+    "domain": [
+      "ConcreteEntity",
+      "Numeric|QualitativeProperty"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "PRODUCTION_PROCESS",
+    "arity": 3,
+    "domain": [
+      "AbstractEntity",
+      "TemporalRelation",
+      "Logical"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ORIGINAL_POST_INDICATOR",
+    "arity": 1,
+    "domain": [
+      "Modal|Epistemic"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PROOF_CONCEPT",
+    "arity": 2,
+    "domain": [
+      "Logical|NumericProperty",
+      "CausalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ABBREVIATION_EXPANSION",
+    "arity": 1,
+    "domain": [
+      "Connective"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "NATIONAL_REGISTER_OF_HISTORIC_PLACES_LISTING",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|Property",
+      "TemporalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "HOW_TO_UNDERSTAND_CONCEPTS",
+    "arity": 3,
+    "domain": [
+      "Logical",
+      "Modal",
+      "CognitiveProcess"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "USER_QUERY_OR_THOUGHT_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Property|ConcreteEntity",
+      "Connective"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "WEEKLY_ACTIVITY_TREND",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "TECHNOLOGY_UTILIZATION",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "VERSION_CONTROL_OPERATION",
+    "arity": 2,
+    "domain": [
+      "ConcreteEntity",
+      "Property"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "CAUSAL_MODELS",
+    "arity": 1,
+    "domain": [
+      "CausalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "HELP_REQUEST",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity",
+      "Property"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "LOGARITHM_SIMPLIFICATION",
+    "arity": 1,
+    "domain": [
+      "NumericProperty"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MATHEMATICAL_ASSISTANCE_REQUEST",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity",
+      "LogicalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ARRIVE_AT_LOCATION",
+    "arity": 1,
+    "domain": [
+      "SpatialRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "DISTANCE_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Entity"
+    ],
+    "range": "NumericProperty"
+  },
+  {
+    "symbol": "SEE_ALSO_REFERENCE",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "INCLUSION_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Entity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "INTERNAL_CLUSTER_ACTIVATION",
+    "arity": 0,
+    "domain": [],
+    "range": "Logical"
+  },
+  {
+    "symbol": "HOLDING_POSITION_UNTIL",
+    "arity": 1,
+    "domain": [
+      "TemporalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "GEOGRAPHICAL_CONNECTION",
+    "arity": 2,
+    "domain": [
+      "SpatialRelation",
+      "SpatialRelation"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SELECTION_PROCESS",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "CONTEXT_SHIFT",
+    "arity": 0,
+    "domain": [],
+    "range": "Logical"
+  },
+  {
+    "symbol": "ABSTRACT_REASONING",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "OPTIMIZATION_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Property",
+      "NumericProperty"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "FIND_VALUE_OR_EXPRESSION",
+    "arity": 1,
+    "domain": [
+      "LogicalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SPORTS_LEAGUE_PROMOTION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Ordinal"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SEQUENTIAL_ORDERING",
+    "arity": 2,
+    "domain": [
+      "Process",
+      "Entity"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "INTERNAL_CHANGE",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity"
+    ],
+    "range": "CausalRelation"
+  },
+  {
+    "symbol": "REGARDED_AS",
+    "arity": 2,
+    "domain": [
+      "ConcreteEntity|AbstractEntity",
+      "Property"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "COMPARATIVE_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "NumericProperty|QualitativeProperty",
+      "Comparator"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "SEARCH_OPERATION",
+    "arity": 1,
+    "domain": [
+      "Entity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "INEQUALITY_RELATION",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "Operator"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "GENERIC_PROBLEM_CONTEXT",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "AS_PHRASE_INTRODUCTION",
+    "arity": 1,
+    "domain": [
+      "Logical|Connective"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "NEGATIVE_INTERACTION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MIGRATION_EVENT",
+    "arity": 1,
+    "domain": [
+      "SpatialRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MEDIA_PRODUCTION",
+    "arity": 3,
+    "domain": [
+      "ConcreteEntity|AbstractEntity",
+      "Property",
+      "Logical"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "GENERAL_NAVIGATION",
+    "arity": 2,
+    "domain": [
+      "Process",
+      "Entity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "RAPID_ADAPTATION",
+    "arity": 1,
+    "domain": [
+      "TemporalRelation|SpatialRelation"
+    ],
+    "range": "CognitiveProcess"
+  },
+  {
+    "symbol": "SELF_EDUCATION_PROCESS",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "FRIEND_GIFT_EXCHANGE",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Property"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "LEAD_TO_CHANGE",
+    "arity": 1,
+    "domain": [
+      "Event|CausalRelation"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ARBITRARY_SELECTION",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "SQUARE_ROOT",
+    "arity": 1,
+    "domain": [
+      "NumericProperty"
+    ],
+    "range": "NumericProperty"
+  },
+  {
+    "symbol": "MATHEMATICAL_ASSISTANCE",
+    "arity": 1,
+    "domain": [
+      "Logical|Operator"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "COMPARATIVE_RELATIONSHIPS",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity",
+      "Comparator"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "NOW_CLAUSE",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "PERSONAL_LIFE_EVENT",
+    "arity": 2,
+    "domain": [
+      "Person|Entity",
+      "Age|NumericProperty"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "MATHEMATICAL_SOLUTION",
+    "arity": 1,
+    "domain": [
+      "Problem|AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "APPLICATION_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Substance|ConcreteEntity",
+      "Nails|ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "GOING_ACTIVITY",
+    "arity": 1,
+    "domain": [
+      "Activity|AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "PERSON_GROWTH_LOCATION",
+    "arity": 2,
+    "domain": [
+      "Person|Entity",
+      "Location|ConcreteEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ATHLETIC_PERFORMANCE",
+    "arity": 1,
+    "domain": [
+      "Activity|AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "EDUCATION_STUDY",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "PLANNING_PROCESS",
+    "arity": 1,
+    "domain": [
+      "Proposal|AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "GOVERNMENT_CONTROL",
+    "arity": 2,
+    "domain": [
+      "Subject|Entity",
+      "Controller|Entity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "LIFECYCLE_PROCESS",
+    "arity": 1,
+    "domain": [
+      "Component|AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "SHARING_ITEMS",
+    "arity": 2,
+    "domain": [
+      "Items|ConcreteEntity",
+      "Recipient|Entity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "ABSTRACT_CONTEXT",
+    "arity": 0,
+    "domain": [],
+    "range": "Logical"
+  },
+  {
+    "symbol": "PARTIAL_DERIVATIVE",
+    "arity": 1,
+    "domain": [
+      "Function|AbstractEntity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "DEFINITION",
+    "arity": 2,
+    "domain": [
+      "Concept|AbstractEntity",
+      "Description|Logical"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "DISPLAY_SITE_WITHOUT_ASSETS",
+    "arity": 0,
+    "domain": [],
+    "range": "Process"
+  },
+  {
+    "symbol": "CUSTOMER_SERVICE",
+    "arity": 2,
+    "domain": [
+      "ServiceProvider|Entity",
+      "Client|Entity"
+    ],
+    "range": "Process"
+  },
+  {
+    "symbol": "CAUSAL_ENABLES",
+    "arity": 2,
+    "domain": [
+      "Cause|AbstractEntity",
+      "Effect|AbstractEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CAUSAL_PREVENTS",
+    "arity": 2,
+    "domain": [
+      "Preventer|AbstractEntity",
+      "Prevented|AbstractEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CAUSAL_REQUIRES",
+    "arity": 2,
+    "domain": [
+      "Requirement|AbstractEntity",
+      "RequiredEffect|AbstractEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CAUSAL_CONTRIBUTES",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "CausalRelation"
+  },
+  {
+    "symbol": "TEMPORAL_BEFORE",
+    "arity": 2,
+    "domain": [
+      "TemporalRelation|AbstractEntity|ConcreteEntity",
+      "TemporalRelation|AbstractEntity|ConcreteEntity"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "TEMPORAL_AFTER",
+    "arity": 2,
+    "domain": [
+      "TemporalRelation|AbstractEntity|ConcreteEntity",
+      "TemporalRelation|AbstractEntity|ConcreteEntity"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "TEMPORAL_DURING",
+    "arity": 2,
+    "domain": [
+      "TemporalRelation|AbstractEntity|ConcreteEntity",
+      "TemporalRelation|AbstractEntity|ConcreteEntity"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "TEMPORAL_UNTIL",
+    "arity": 2,
+    "domain": [
+      "TemporalRelation|AbstractEntity|ConcreteEntity",
+      "TemporalRelation|AbstractEntity|ConcreteEntity"
+    ],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "IS_INSTANCE_OF",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "IS_PART_OF",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "IS_DEFINED_AS",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "IS_EQUIVALENT_TO",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "IS_GREATER_THAN",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "NumericProperty"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "IS_LESS_THAN",
+    "arity": 2,
+    "domain": [
+      "NumericProperty",
+      "NumericProperty"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "IS_OPPOSITE_OF",
+    "arity": 2,
+    "domain": [
+      "AbstractEntity|ConcreteEntity",
+      "AbstractEntity|ConcreteEntity"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "LOGICAL_OR",
+    "arity": 2,
+    "domain": [
+      "Logical",
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "LOGICAL_NOT",
+    "arity": 1,
+    "domain": [
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "LOGICAL_IMPLIES",
+    "arity": 2,
+    "domain": [
+      "Logical",
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "LOGICAL_IFF",
+    "arity": 2,
+    "domain": [
+      "Logical",
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "LOGICAL_XOR",
+    "arity": 2,
+    "domain": [
+      "Logical",
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "FORALL",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "EXISTS",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "EXISTS_UNIQUE",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Logical"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "NEW_ITEM_OR_EVENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ALSO_KNOWN_AS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PUBLIC_ALERT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "COMPARISON_QUESTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "INSTITUTION_AFFILIATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "BIRD_COUNTING",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "TEMPORAL_CHANGE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "DISTANCE_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "INSTANT_MESSAGING",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONSERVATION_PRINCIPLE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONSIDER_EXAMPLE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "BEFORE_OCCURRENCE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PURCHASE_ACTIVITY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "RESIDENCE_HISTORY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "TRAVEL_DISTANCE_AND_TIME",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ABSTRACT_CONCEPT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "DATE_EVENT_ASSOCIATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "HOW_DO_QUESTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONDITIONAL_STATEMENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "DESIRE_TO_QUANTIFY_OR_DISTRIBUTE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SHOPPING_TRANSACTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ACHIEVEMENT_AWARD_WINNING",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ABSTRACT_INTERPRETATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONTRADICTION_OR_EXCEPTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "DATA_ANALYSIS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "DISTRIBUTION_OF_EQUAL_PARTS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SET_THEORY_CONCEPT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "LIGHT_PHYSICS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ALSO_INVOLVEMENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "EDUCATION_AT_INSTITUTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MINIMIZATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "IMAGE_PROCESSING",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "HOME_WORK_HELP",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "APOLOGY_EXPRESSION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SPORTS_CAREER",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "POLITICAL_OFFICE_ELECTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ABSTRACT_THINKING",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "LOCATION_SPECIFICATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "TIME_PERIOD_DURING",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PHYSICAL_ACTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "TOTAL_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "DATE_OF_RELEASE_OR_EVENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "BAND_DISSOLUTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "NAMED_AFTER",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_INTEGRAL",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "WEBSITE_USAGE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "OLYMPIC_COMPETITION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "COMMUNICATION_CONTEXT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PHYSICAL_MOVEMENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SHARED_ACTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_OPERATIONS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "READING_ACTIVITY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION_CONDITION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "OLYMPICS_PARTICIPATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "TOTAL_NUMBER_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SCIENTIFIC_DESCRIPTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "NON_RELATIVISTIC_QUANTUM_MECHANICS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SHARING_ITEMS_OR_MONEY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "COMMUNICATION_INITIATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SERIOUS_RESEARCH",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "HISTORICAL_EVENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "DEATH_OCCURRENCE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "IMPROVEMENT_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONSIDER_FOLLOWING",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "COMBINATION_TOGETHER",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONVERSION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "FAILURE_DETECTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SINCE_CLAUSE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "REQUEST_FOR_ASSISTANCE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONDITIONAL_STATEMENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "WHICH_CLAUSE_COMMONALITY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PARTICIPANT_IN_EVENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "DISTANCE_BETWEEN_TWO_ITEMS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ADD_OPERATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ADDITION_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "GENERIC_REFERENCE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CAUSAL_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SOCIAL_INTERACTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SPORTS_COMPETITION_PARTICIPATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONTEXT_TRANSITION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "HOME_WORK_STATEMENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "INCOME_AND_PRODUCTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PAYMENT_REQUIRED",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "AWARD_RECEPTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "BIRTHPLACE_RELATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "EDUCATION_AT_UNIVERSITY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "COMMUNICATION_EXPECTATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "NETWORK_LOAD_BALANCING",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ESTIMATION_PROCESS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PROGRAM_CREATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "RUSSIAN_REIGN_IMPACT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "START_POINT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SPENDING_MONEY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_PROOF",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "PLAYING_ACTIVITY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "WEEKEND_ACTIVITY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "RELATION_OF_COMPARISON",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "FIND_METHOD_OR_VALUE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "HAS_BEEN_USED",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "SEQUENCE_OR_TERM",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "UNITY_FOR_VOIVODESHIP",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CODE_IMPORT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "GOING_TO_LOCATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "THEREFORE",
+    "arity": 1,
+    "domain": [
+      "Logical|Relation|Process|Entity"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "BECAUSE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "CONTRADICTS",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ASSUMES",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "GIVEN",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "KNOWN_TRUE",
+    "arity": 1,
+    "domain": [
+      "Logical|Relation|Entity"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "BELIEVED_TRUE",
+    "arity": 1,
+    "domain": [
+      "Logical|Relation|Entity"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "UNCERTAIN",
+    "arity": 1,
+    "domain": [
+      "Logical|Relation|Entity"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "KNOWN_FALSE",
+    "arity": 1,
+    "domain": [
+      "Logical|Relation|Entity"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "ARITH_ADD",
+    "arity": 2,
+    "domain": [
+      "Numeric|Entity",
+      "Numeric|Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "ARITH_SUBTRACT",
+    "arity": 2,
+    "domain": [
+      "Numeric|Entity",
+      "Numeric|Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "ARITH_MULTIPLY",
+    "arity": 2,
+    "domain": [
+      "Numeric|Entity",
+      "Numeric|Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "ARITH_DIVIDE",
+    "arity": 2,
+    "domain": [
+      "Numeric|Entity",
+      "Numeric|Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "ARITH_EQUALS",
+    "arity": 2,
+    "domain": [
+      "Numeric|Entity",
+      "Numeric|Entity"
+    ],
+    "range": "Logical"
+  },
+  {
+    "symbol": "ARITH_MODULO",
+    "arity": 2,
+    "domain": [
+      "Numeric|Entity",
+      "Numeric|Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "COMPARISON_DIFFERENCE",
+    "arity": 3,
+    "domain": [
+      "Numeric",
+      "Numeric",
+      "Comparator"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "QUANTITATIVE_INQUIRY",
+    "arity": 1,
+    "domain": [
+      "Quantifier"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATH_FRACTION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Operator"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "QUANTITATIVE_ANALYSIS",
+    "arity": 0,
+    "domain": [],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "LANGUAGE_MODEL_CONTEXTS",
+    "arity": 1,
+    "domain": [
+      "ConcreteEntity"
+    ],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "NUMERIC_QUESTION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "LogicalRelation"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "PRICING_CONCEPT",
+    "arity": 1,
+    "domain": [
+      "Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATHEMATICAL_INEQUALITY",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Comparator"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "NUMERIC_VALUE_ASSOCIATION",
+    "arity": 1,
+    "domain": [
+      "Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "FINANCIAL_GAINS",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Numeric"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "MULTIPLIER_DOUBLE",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "QUANTITY_MEASUREMENT",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Property"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATH_EXPRESSION",
+    "arity": 3,
+    "domain": [
+      "Numeric",
+      "Operator",
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "NUMERIC_QUANTITY",
+    "arity": 1,
+    "domain": [
+      "Entity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "PROBABILITY_P",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "NEGATIVE_VALUE",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "FRACTIONAL_DISTRIBUTION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Property"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "NUMERIC_VALUE_VIEWS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "SINGLE_OCCURRENCE",
+    "arity": 1,
+    "domain": [
+      "Entity"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "QUANTITATIVE_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Property"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "MATHEMATICAL_CONDITION",
+    "arity": 3,
+    "domain": [
+      "Numeric|LogicalRelation",
+      "Numeric|Property",
+      "Operator"
+    ],
+    "range": "Modal"
+  },
+  {
+    "symbol": "UPPER_BOUND",
+    "arity": 1,
+    "domain": [
+      "Numeric|Property"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "FRACTION_HALF",
+    "arity": 1,
+    "domain": [
+      "Numeric|Property"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "FRACTION_INVOLVEMENT",
+    "arity": 2,
+    "domain": [
+      "Numeric|Property",
+      "LogicalRelation"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "NUMERIC_QUANTITY",
+    "arity": 1,
+    "domain": [
+      "Entity|AbstractEntity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "ZERO_VALUE",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "NUMERIC_DATA_REPRESENTATION",
+    "arity": 1,
+    "domain": [
+      "Entity|AbstractEntity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "PERCENTAGE_CHANGE",
+    "arity": 2,
+    "domain": [
+      "Numeric|Property",
+      "Numeric|Property"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "SEQUENTIAL_NUMBER_SEQUENCE",
+    "arity": 1,
+    "domain": [
+      "Entity|AbstractEntity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATHEMATICAL_CONSTANT",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "FINANCIAL_TRANSACTION",
+    "arity": 1,
+    "domain": [
+      "Entity|AbstractEntity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "QUANTITATIVE_MEASUREMENT",
+    "arity": 2,
+    "domain": [
+      "Entity|AbstractEntity",
+      "LogicalRelation"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "TOTAL_COUNT",
+    "arity": 1,
+    "domain": [
+      "Entity|AbstractEntity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "TWO_CONCEPT",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATHEMATICAL_CONSTANT_PI",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "FINANCIAL_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Entity|AbstractEntity",
+      "LogicalRelation"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "SPRING_FORCE_EQUATION",
+    "arity": 1,
+    "domain": [
+      "Property|PhysicalProcess"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "DAILY_RATE_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Entity|AbstractEntity",
+      "LogicalRelation"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION_INVOLVING_N",
+    "arity": 1,
+    "domain": [
+      "Property|LogicalRelation"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "NUMERIC_OPERATION",
+    "arity": 2,
+    "domain": [
+      "Numeric|Property",
+      "Operator"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "LINEAR_EQUATION",
+    "arity": 3,
+    "domain": [
+      "Numeric",
+      "Numeric",
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "REAL_NUMBERS",
+    "arity": 0,
+    "domain": [],
+    "range": "ConcreteEntity"
+  },
+  {
+    "symbol": "NUMERIC_SEQUENCE",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Logical"
+    ],
+    "range": "NumericSequence"
+  },
+  {
+    "symbol": "PRICE_INFORMATION",
+    "arity": 1,
+    "domain": [
+      "ConcreteEntity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION_CONSTRAINT",
+    "arity": 2,
+    "domain": [
+      "LogicalRelation",
+      "Numeric"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "NUMERIC_VALUE_TWO",
+    "arity": 0,
+    "domain": [],
+    "range": "Ordinal"
+  },
+  {
+    "symbol": "QUANTITY_REFERENCE",
+    "arity": 1,
+    "domain": [
+      "AbstractEntity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATHEMATICAL_CONCEPTS",
+    "arity": 0,
+    "domain": [],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "NUMERIC_VALUE",
+    "arity": 1,
+    "domain": [
+      "Property"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "HISTORICAL_DATES",
+    "arity": 0,
+    "domain": [],
+    "range": "TemporalRelation"
+  },
+  {
+    "symbol": "MATHEMATICAL_FUNCTION_REPRESENTATION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Logical"
+    ],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "MATH_EXPRESSION",
+    "arity": 1,
+    "domain": [
+      "Property"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATH_FRACTION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "LogicalRelation"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "ABSOLUTE_VALUE_EXPRESSION",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "COMPARISON_IN_QUANTITY",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "CausalRelation"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "NUMERIC_QUANTITIES",
+    "arity": 0,
+    "domain": [],
+    "range": "AbstractEntity"
+  },
+  {
+    "symbol": "NUMERIC_DATA_FORMATTING",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "ConcreteEntity"
+  },
+  {
+    "symbol": "MATHEMATICAL_SUM",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "LogicalRelation"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "COMPARISON_OF_QUANTITIES",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "CausalRelation"
+    ],
+    "range": "LogicalRelation"
+  },
+  {
+    "symbol": "NUMERIC_VALUE",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION_Y",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "NUMERIC_VALUE_MENTION",
+    "arity": 1,
+    "domain": [
+      "Entity|AbstractEntity"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "SEQUENCE",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Sequence"
+  },
+  {
+    "symbol": "DECIMAL_REPRESENTATION",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "DecimalRepresentation"
+  },
+  {
+    "symbol": "QUANTITATIVE_MEASUREMENT",
+    "arity": 0,
+    "domain": [],
+    "range": "QuantitativeMeasurement"
+  },
+  {
+    "symbol": "MATHEMATICAL_SEQUENCE",
+    "arity": 1,
+    "domain": [
+      "Numeric|Sequence"
+    ],
+    "range": "MathematicalSequence"
+  },
+  {
+    "symbol": "QUANTITY_MEASUREMENT",
+    "arity": 1,
+    "domain": [
+      "Entity"
+    ],
+    "range": "QuantityMeasurement"
+  },
+  {
+    "symbol": "QUANTITY_EXCEEDING_THRESHOLD",
+    "arity": 2,
+    "domain": [
+      "Numeric|QuantitativeMeasurement",
+      "Numeric"
+    ],
+    "range": "Boolean"
+  },
+  {
+    "symbol": "SQUARE_ROOT_EXPRESSION",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "SquareRootExpression"
+  },
+  {
+    "symbol": "QUANTITY_SPECIFICATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Property",
+      "Numeric|LogicalRelation"
+    ],
+    "range": "QuantitySpecification"
+  },
+  {
+    "symbol": "PERCENTAGE_DISTRIBUTION",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "PercentageDistribution"
+  },
+  {
+    "symbol": "EXPONENTIAL_FUNCTION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Numeric"
+    ],
+    "range": "ExponentialFunction"
+  },
+  {
+    "symbol": "RED_ITEM_COUNT",
+    "arity": 1,
+    "domain": [
+      "Entity|ConcreteEntity"
+    ],
+    "range": "RedItemCount"
+  },
+  {
+    "symbol": "QUANTITATIVE_COMPARISON_AND_CALCULATION",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Numeric"
+    ],
+    "range": "QuantitativeCalculation"
+  },
+  {
+    "symbol": "MILITARY_PERSONNEL_COUNT",
+    "arity": 0,
+    "domain": [],
+    "range": "MilitaryPersonnelCount"
+  },
+  {
+    "symbol": "MINIMUM_REQUIREMENT",
+    "arity": 1,
+    "domain": [
+      "Numeric|QuantityMeasurement"
+    ],
+    "range": "MinimumRequirement"
+  },
+  {
+    "symbol": "QUANTITATIVE_DATA_ASSOCIATION",
+    "arity": 2,
+    "domain": [
+      "Entity",
+      "Numeric|QuantitativeCalculation"
+    ],
+    "range": "QuantitativeDataAssociation"
+  },
+  {
+    "symbol": "CONDITIONAL_RATE_OR_QUANTITY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "QUANTITY_INQUIRY",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION_EQUAL_ONE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_EXPRESSION_CONTEXT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "QUANTITATIVE_DISTRIBUTION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "QUANTITATIVE_STATEMENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MULTIPLICATIVE_RELATIONSHIP",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "QUANTITY_COMPARISON",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "MATHEMATICAL_EQUATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "NUMERIC_FRACTION_REFERENCE",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "ALGEBRAIC_EXPRESSION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "FRACTIONAL_REPRESENTATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "FRACTION_REPRESENTATION",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "COST_MEASUREMENT",
+    "arity": 2,
+    "domain": [
+      "Entity|Process",
+      "Entity|Process"
+    ],
+    "range": "Relation"
+  },
+  {
+    "symbol": "NUMERIC_RESULT",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "RUNNING_TOTAL",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "TOTAL",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "RESULT",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "REMAINING_AMOUNT",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "AMOUNT",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "EARNINGS",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "DISTANCE",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "COST",
+    "arity": 0,
+    "domain": [],
+    "range": "Numeric"
+  }
+]

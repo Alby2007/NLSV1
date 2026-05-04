@@ -1,0 +1,11 @@
+torch>=2.1.0
+transformers>=4.40.0
+datasets>=2.18.0
+scikit-learn>=1.4.0
+lark>=1.1.9
+peft>=0.10.0
+ollama>=0.2.0
+numpy>=1.26.0
+tqdm>=4.66.0
+accelerate>=0.29.0
+bitsandbytes>=0.43.0

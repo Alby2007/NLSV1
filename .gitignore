@@ -1,0 +1,20 @@
+# Large data files — too big for GitHub
+data/activations.npy
+data/activation_meta.jsonl
+data/assignments.npy
+data/centroids.npy
+
+# Keep these — needed for pod to resume without rerunning phases 1-3
+# data/ontology.json
+# data/primitives.json
+# data/grammar_signatures.json
+# data/corpus/train.jsonl
+# data/.phase*_complete
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+outputs/pipeline.log

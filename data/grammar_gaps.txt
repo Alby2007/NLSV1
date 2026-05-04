@@ -1,0 +1,52 @@
+### Semantic Patterns Not Expressible by the Current Grammar
+
+The current set of primitives allows for a wide range of expressions, but there are several semantic patterns that cannot be directly expressed due to limitations in how relationships and properties are defined:
+
+1. **Hierarchical Relationships:** While "GEOGRAPHICAL_MUNICIPALITY_RELATIONSHIP" describes specific municipality relationships, the grammar lacks a way to express more general hierarchical structures (e.g., parent-child relationships) beyond geographical contexts.
+
+2. **Temporal Relations:** There is no clear mechanism to describe complex temporal relations or sequences of events over time (beyond basic "TIME_REFERENCE").
+
+3. **Contextual Scope:** The primitives allow for identifying references and their properties but do not provide a way to define the scope or context in which these references are meaningful.
+
+4. **Conditional Logic:** No primitive exists that allows for expressing conditional statements or logical branching within expressions, such as "if this property then perform this action."
+
+5. **Quantitative Comparisons:** While primitives exist for comparing quantities ("HEIGHT_COMPARISON," "DISTANCE_CALCULATION"), there is no way to express complex comparisons involving multiple criteria (e.g., "greater than" and "less than").
+
+### Suggested Grammar Extensions
+
+To address these limitations, the following extensions are suggested. Each extension aims to provide a clear and unambiguous addition to the grammar:
+
+1. **Hierarchical Relationships:**
+   - Introduce a new primitive `RELATIONSHIP` that can denote any type of hierarchical relationship (e.g., `CHILD_OF`, `PARENT_OF`). This would allow for more flexible representation of relationships beyond just geographical contexts.
+   
+2. **Temporal Relations:**
+   - Add primitives such as `EVENT_SEQUENCE`, `TIMELINE`, and `DURATION`. These could be used to describe sequences of events, timelines with specific durations, and temporal constraints respectively.
+
+3. **Contextual Scope:**
+   - Introduce a primitive `SCOPE` that defines the context or domain within which references are valid (e.g., `CONTEXTUAL_SCOPE: "sports"`, `CONTEXTUAL_SCOPE: "legal"`).
+
+4. **Conditional Logic:**
+   - Add primitives like `CONDITIONAL_LOGIC` and `IF_THEN_STATEMENT`. For example, `IF_CONDITION: "propertyX > thresholdY" THEN_ACTION: "execute actionZ"`.
+
+5. **Quantitative Comparisons:**
+   - Introduce comparative operators as new primitives (e.g., `GREATER_THAN`, `LESS_THAN`). These could be used to specify comparisons between different properties or values more flexibly.
+
+### Example of a New Primitive
+
+To illustrate one of the extensions, consider adding a hierarchical relationship primitive:
+
+```plaintext
+{
+  "symbol": "RELATIONSHIP",
+  "type": "Relation",
+  "gloss": "A general representation of relationships in hierarchy. This can include parent-child or broader-narrower relations.",
+  "subtypes": {
+    "CHILD_OF": "Indicates a child entity within a hierarchical structure.",
+    "PARENT_OF": "Indicates a parent entity within a hierarchical structure."
+  }
+}
+```
+
+This new primitive would allow for more versatile representation of complex relationships without ambiguity, expanding the grammar's expressiveness significantly.
+
+These extensions ensure that the language can now capture more nuanced and complex semantic patterns, thereby improving its utility in describing diverse scenarios.

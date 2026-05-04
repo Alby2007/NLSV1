@@ -1,0 +1,11 @@
+{
+  "gsm8k": {
+    "total": 0,
+    "success": 0,
+    "discard_rate": 1.0
+  },
+  "_summary": {
+    "total_valid": 0,
+    "mean_compression_ratio": 0.0
+  }
+}
