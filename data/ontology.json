@@ -23810,5 +23810,165 @@
     "gloss": "the monetary cost or price of something",
     "centroid": null,
     "confidence": 1.0
+  },
+  {
+    "symbol": "DIVIDE",
+    "type": "Numeric",
+    "subtype": "Arithmetic",
+    "gloss": "Divides one quantity by another",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "PLUS",
+    "type": "Numeric",
+    "subtype": "Arithmetic",
+    "gloss": "Adds two quantities together",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "EQUALS",
+    "type": "Numeric",
+    "subtype": "Arithmetic",
+    "gloss": "Asserts two quantities are equal",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "MINUS",
+    "type": "Numeric",
+    "subtype": "Arithmetic",
+    "gloss": "Subtracts one quantity from another",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "MULTIPLY",
+    "type": "Numeric",
+    "subtype": "Arithmetic",
+    "gloss": "Multiplies two quantities together",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "FEET",
+    "type": "Numeric",
+    "subtype": "Measurement",
+    "gloss": "Distance measured in feet",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "HOURS",
+    "type": "Numeric",
+    "subtype": "Measurement",
+    "gloss": "Duration measured in hours",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "REVENUE",
+    "type": "Numeric",
+    "subtype": "Financial",
+    "gloss": "Total income from sales or services",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "YEAR",
+    "type": "Numeric",
+    "subtype": "Temporal",
+    "gloss": "Duration or index of one calendar year",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "TOTAL_DAYS",
+    "type": "Numeric",
+    "subtype": "Temporal",
+    "gloss": "Total number of days in a period",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "MINUTES",
+    "type": "Numeric",
+    "subtype": "Measurement",
+    "gloss": "Duration measured in minutes",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "MILES",
+    "type": "Numeric",
+    "subtype": "Measurement",
+    "gloss": "Distance measured in miles",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "POUNDS",
+    "type": "Numeric",
+    "subtype": "Measurement",
+    "gloss": "Weight measured in pounds",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "DOLLARS",
+    "type": "Numeric",
+    "subtype": "Financial",
+    "gloss": "Monetary amount in dollars",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "ITEMS",
+    "type": "Numeric",
+    "subtype": "Quantity",
+    "gloss": "Count of discrete items",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "STUDENTS",
+    "type": "Numeric",
+    "subtype": "Quantity",
+    "gloss": "Count of students",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "WORKERS",
+    "type": "Numeric",
+    "subtype": "Quantity",
+    "gloss": "Count of workers or employees",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "DAYS",
+    "type": "Numeric",
+    "subtype": "Temporal",
+    "gloss": "Duration measured in days",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "WEEKS",
+    "type": "Numeric",
+    "subtype": "Temporal",
+    "gloss": "Duration measured in weeks",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "MONTHS",
+    "type": "Numeric",
+    "subtype": "Temporal",
+    "gloss": "Duration measured in months",
+    "centroid": null,
+    "confidence": 1.0
   }
 ]

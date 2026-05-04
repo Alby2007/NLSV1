@@ -4051,5 +4051,170 @@
     "arity": 0,
     "domain": [],
     "range": "Numeric"
+  },
+  {
+    "symbol": "DIVIDE",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "PLUS",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "EQUALS",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MINUS",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MULTIPLY",
+    "arity": 2,
+    "domain": [
+      "Numeric",
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "FEET",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "HOURS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "REVENUE",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "YEAR",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "TOTAL_DAYS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MINUTES",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MILES",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "POUNDS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "DOLLARS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "ITEMS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "STUDENTS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "WORKERS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "DAYS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "WEEKS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
+  },
+  {
+    "symbol": "MONTHS",
+    "arity": 1,
+    "domain": [
+      "Numeric"
+    ],
+    "range": "Numeric"
   }
 ]

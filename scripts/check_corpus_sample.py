@@ -55,7 +55,7 @@ def main():
     print(f"  Min  : {min(ratios):.3f}")
     print(f"  Max  : {max(ratios):.3f}")
     print(f"  >1.5 (would discard): {sum(1 for r in ratios if r > 1.5)}")
-    print(f"  ≤0.65 (target)      : {sum(1 for r in ratios if r <= 0.65)}/{len(ratios)}")
+    print(f"  <=0.65 (target)     : {sum(1 for r in ratios if r <= 0.65)}/{len(ratios)}")
 
     chains = [e.get("neuralese_chain", "") for e in examples]
     nl_leaks = [c for c in chains if has_nl_leak(c)]
