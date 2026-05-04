@@ -11,6 +11,7 @@ Pipeline per example:
 
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 from tqdm import tqdm
@@ -539,6 +540,8 @@ def main():
             logger.info(f"Resuming — {already_written} examples already on disk, skipping those.")
 
     total_written = already_written
+    last_push_at = already_written  # track when we last pushed
+    GIT_PUSH_EVERY = 100
     stats = {}
 
     # Open corpus file in append mode — each validated example written immediately.
@@ -566,6 +569,28 @@ def main():
                         corpus_f.flush()
                         success += 1
                         total_written += 1
+                        # Push to GitHub every GIT_PUSH_EVERY new examples
+                        if total_written - last_push_at >= GIT_PUSH_EVERY:
+                            try:
+                                subprocess.run(
+                                    ["git", "-C", str(TRAIN_CORPUS_PATH.parent.parent),
+                                     "add", str(TRAIN_CORPUS_PATH)],
+                                    check=True, capture_output=True
+                                )
+                                subprocess.run(
+                                    ["git", "-C", str(TRAIN_CORPUS_PATH.parent.parent),
+                                     "commit", "-m", f"corpus checkpoint: {total_written} examples"],
+                                    check=True, capture_output=True
+                                )
+                                subprocess.run(
+                                    ["git", "-C", str(TRAIN_CORPUS_PATH.parent.parent),
+                                     "push", "origin", "master"],
+                                    check=True, capture_output=True
+                                )
+                                last_push_at = total_written
+                                logger.info(f"Git push: {total_written} examples pushed to GitHub.")
+                            except subprocess.CalledProcessError as e:
+                                logger.warning(f"Git push failed at {total_written}: {e.stderr.decode().strip()[:200]}")
                     else:
                         discarded += 1
             except KeyboardInterrupt:
