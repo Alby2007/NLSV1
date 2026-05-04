@@ -571,23 +571,28 @@ def main():
                         total_written += 1
                         # Push to GitHub every GIT_PUSH_EVERY new examples
                         if total_written - last_push_at >= GIT_PUSH_EVERY:
+                            last_push_at = total_written  # always advance to avoid retry storm
                             try:
+                                repo = str(TRAIN_CORPUS_PATH.parent.parent)
                                 subprocess.run(
-                                    ["git", "-C", str(TRAIN_CORPUS_PATH.parent.parent),
-                                     "add", str(TRAIN_CORPUS_PATH)],
+                                    ["git", "-C", repo, "add", str(TRAIN_CORPUS_PATH)],
                                     check=True, capture_output=True
                                 )
-                                subprocess.run(
-                                    ["git", "-C", str(TRAIN_CORPUS_PATH.parent.parent),
-                                     "commit", "-m", f"corpus checkpoint: {total_written} examples"],
+                                # Check if there's anything to commit
+                                status = subprocess.run(
+                                    ["git", "-C", repo, "status", "--porcelain"],
                                     check=True, capture_output=True
                                 )
+                                if status.stdout.strip():
+                                    subprocess.run(
+                                        ["git", "-C", repo, "commit", "-m",
+                                         f"corpus checkpoint: {total_written} examples"],
+                                        check=True, capture_output=True
+                                    )
                                 subprocess.run(
-                                    ["git", "-C", str(TRAIN_CORPUS_PATH.parent.parent),
-                                     "push", "origin", "master"],
+                                    ["git", "-C", repo, "push", "origin", "master"],
                                     check=True, capture_output=True
                                 )
-                                last_push_at = total_written
                                 logger.info(f"Git push: {total_written} examples pushed to GitHub.")
                             except subprocess.CalledProcessError as e:
                                 logger.warning(f"Git push failed at {total_written}: {e.stderr.decode().strip()[:200]}")
