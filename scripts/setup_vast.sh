@@ -31,7 +31,7 @@ import os, shutil
 
 token = os.environ['HF_TOKEN']
 path = hf_hub_download(
-    repo_id='Alby2007/neuralese-v1-corpus',
+    repo_id='ALBYJ07/neuralese-v1-corpus',
     filename='train.jsonl',
     repo_type='dataset',
     token=token,
