@@ -103,16 +103,21 @@ def main():
     model.gradient_checkpointing_enable()
 
     if num_added > 0:
-        old_vocab_size = model.get_input_embeddings().weight.shape[0]
+        # Load original tokenizer to get subword IDs before vocab expansion
+        orig_tok = AutoTokenizer.from_pretrained(FINETUNE_MODEL, trust_remote_code=True)
+        subword_ids_per_token = [orig_tok.encode(sym, add_special_tokens=False) for sym in NEURALESE_TOKENS]
+
         model.resize_token_embeddings(len(tokenizer))
         # Initialise new token embeddings to mean of their constituent subword pieces
         with torch.no_grad():
             emb = model.get_input_embeddings().weight
-            orig_tok = AutoTokenizer.from_pretrained(FINETUNE_MODEL, trust_remote_code=True)
-            for i, sym in enumerate(NEURALESE_TOKENS):
-                subword_ids = orig_tok.encode(sym, add_special_tokens=False)
+            for sym, new_id, subword_ids in zip(
+                NEURALESE_TOKENS,
+                tokenizer.convert_tokens_to_ids(NEURALESE_TOKENS),
+                subword_ids_per_token,
+            ):
                 mean_vec = emb[subword_ids].mean(dim=0)
-                emb[old_vocab_size + i] = mean_vec
+                emb[new_id] = mean_vec
         logging.info("New token embeddings initialised to subword means.")
 
     lora_config = LoraConfig(
