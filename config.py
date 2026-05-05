@@ -75,12 +75,12 @@ SOURCE_DATASETS = [
 ]
 
 # ── Phase 5: Fine-tuning ──────────────────────────────────────────────────────
-FINETUNE_MODEL = "google/gemma-2-2b"
+FINETUNE_MODEL = "Qwen/Qwen2.5-7B-Instruct"
 LORA_RANK = 16
 LORA_ALPHA = 32
-LORA_TARGET_MODULES = ["q_proj", "v_proj"]
-TRAIN_BATCH_SIZE = 4
-GRAD_ACCUMULATION_STEPS = 8
+LORA_TARGET_MODULES = ["q_proj", "k_proj", "v_proj", "o_proj"]
+TRAIN_BATCH_SIZE = 2
+GRAD_ACCUMULATION_STEPS = 16   # effective batch = 32
 LEARNING_RATE = 2e-4
 NUM_EPOCHS = 3
 MAX_SEQ_LEN = 512

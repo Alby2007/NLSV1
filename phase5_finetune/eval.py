@@ -28,15 +28,20 @@ EVAL_SAMPLES_PER_DATASET = 200
 
 
 def load_model(checkpoint_path: Path, device: str):
-    tokenizer = AutoTokenizer.from_pretrained(str(checkpoint_path))
+    # Load tokenizer from checkpoint — it has the custom Neuralese vocab injected during training
+    tokenizer = AutoTokenizer.from_pretrained(str(checkpoint_path), trust_remote_code=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "left"  # left-pad for generation
 
     base = AutoModelForCausalLM.from_pretrained(
         FINETUNE_MODEL,
         torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-        device_map=device,
+        device_map="auto" if device == "cuda" else device,
+        trust_remote_code=True,
     )
+    # Resize to match custom vocab before loading LoRA weights
+    base.resize_token_embeddings(len(tokenizer))
     model = PeftModel.from_pretrained(base, str(checkpoint_path))
     model.eval()
     return tokenizer, model

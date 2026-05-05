@@ -6,10 +6,12 @@ Output: outputs/checkpoints/
 """
 
 import json
+import logging
 import sys
 from pathlib import Path
 from typing import Optional
 
+import numpy as np
 import torch
 from datasets import Dataset
 from transformers import (
@@ -21,6 +23,12 @@ from transformers import (
 )
 from peft import LoraConfig, get_peft_model, TaskType
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)-8s %(message)s",
+    handlers=[logging.StreamHandler(), logging.FileHandler("outputs/train.log")],
+)
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import (
     FINETUNE_MODEL,
@@ -30,6 +38,17 @@ from config import (
     EVAL_SPLIT_RATIO,
     TRAIN_CORPUS_PATH, CHECKPOINTS_DIR,
 )
+
+
+# High-frequency Neuralese primitives to add as atomic vocabulary tokens.
+# Ordered by corpus frequency — top symbols fragment into 3-5 BPE pieces each.
+NEURALESE_TOKENS = [
+    "ARITH_EQUALS", "NUMERIC_RESULT", "ARITH_MULTIPLY", "ARITH_ADD",
+    "ARITH_DIVIDE", "ARITH_SUBTRACT", "CAUSAL_REQUIRES", "TEMPORAL_CHANGE",
+    "CAUSAL_ENABLES", "TEMPORAL_DURING", "TEMPORAL_AFTER", "TEMPORAL_BEFORE",
+    "CAUSAL_CONTRIBUTES", "RUNNING_TOTAL", "LOGICAL_AND", "IS_EQUIVALENT_TO",
+    "THEREFORE", "LOGICAL_NOT", "LOGICAL_IMPLIES", "FORALL", "EXISTS",
+]
 
 
 PROMPT_TEMPLATE = (
@@ -63,18 +82,38 @@ def tokenize_fn(examples, tokenizer):
 
 def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"Device: {device}")
+    logging.info(f"Device: {device}")
 
-    print(f"Loading tokenizer and model: {FINETUNE_MODEL}")
-    tokenizer = AutoTokenizer.from_pretrained(FINETUNE_MODEL)
+    logging.info(f"Loading tokenizer and model: {FINETUNE_MODEL}")
+    tokenizer = AutoTokenizer.from_pretrained(FINETUNE_MODEL, trust_remote_code=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = "right"
+
+    # Inject high-frequency Neuralese symbols as atomic tokens
+    num_added = tokenizer.add_tokens(NEURALESE_TOKENS, special_tokens=False)
+    logging.info(f"Added {num_added} Neuralese tokens to vocabulary (new vocab size: {len(tokenizer)})")
 
     model = AutoModelForCausalLM.from_pretrained(
         FINETUNE_MODEL,
         torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-        device_map=device,
+        device_map="auto" if device == "cuda" else device,
+        trust_remote_code=True,
     )
+    model.gradient_checkpointing_enable()
+
+    if num_added > 0:
+        old_vocab_size = model.get_input_embeddings().weight.shape[0]
+        model.resize_token_embeddings(len(tokenizer))
+        # Initialise new token embeddings to mean of their constituent subword pieces
+        with torch.no_grad():
+            emb = model.get_input_embeddings().weight
+            orig_tok = AutoTokenizer.from_pretrained(FINETUNE_MODEL, trust_remote_code=True)
+            for i, sym in enumerate(NEURALESE_TOKENS):
+                subword_ids = orig_tok.encode(sym, add_special_tokens=False)
+                mean_vec = emb[subword_ids].mean(dim=0)
+                emb[old_vocab_size + i] = mean_vec
+        logging.info("New token embeddings initialised to subword means.")
 
     lora_config = LoraConfig(
         task_type=TaskType.CAUSAL_LM,
@@ -86,9 +125,10 @@ def main():
     )
     model = get_peft_model(model, lora_config)
     model.print_trainable_parameters()
+    logging.info("LoRA applied.")
 
     corpus = load_corpus()
-    print(f"Corpus size: {len(corpus)}")
+    logging.info(f"Corpus size: {len(corpus)}")
 
     texts = [format_example(item) for item in corpus]
     dataset = Dataset.from_dict({"text": texts})
@@ -105,12 +145,14 @@ def main():
         gradient_accumulation_steps=GRAD_ACCUMULATION_STEPS,
         learning_rate=LEARNING_RATE,
         fp16=(device == "cuda"),
-        logging_steps=50,
+        logging_steps=20,
         eval_strategy="epoch",
         save_strategy="epoch",
         load_best_model_at_end=True,
         report_to="none",
         dataloader_num_workers=0,
+        gradient_checkpointing=True,
+        ddp_find_unused_parameters=False,
     )
 
     trainer = Trainer(
@@ -121,13 +163,24 @@ def main():
         data_collator=data_collator,
     )
 
-    print("Starting training...")
+    logging.info("Starting training...")
     trainer.train()
 
     final_path = CHECKPOINTS_DIR / "final"
     model.save_pretrained(str(final_path))
-    tokenizer.save_pretrained(str(final_path))
-    print(f"Model saved to {final_path}")
+    tokenizer.save_pretrained(str(final_path))  # saves custom vocab with new tokens
+    logging.info(f"Model saved to {final_path}")
+
+    # Verify all Neuralese tokens are now atomic
+    failures = []
+    for sym in NEURALESE_TOKENS:
+        toks = tokenizer.encode(sym, add_special_tokens=False)
+        if len(toks) != 1:
+            failures.append(f"{sym} -> {len(toks)} tokens")
+    if failures:
+        logging.warning(f"Token atomicity check FAILED: {failures}")
+    else:
+        logging.info(f"All {len(NEURALESE_TOKENS)} Neuralese tokens are atomic. Token ratio will improve at eval.")
 
 
 if __name__ == "__main__":
