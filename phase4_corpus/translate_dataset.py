@@ -125,6 +125,9 @@ def translate_step(
             "STRICT RULES — violations cause parse failure:\n"
             "1. Atoms: UPPER_CASE_SYMBOL from the list above OR bare number (42, 3.14, -1).\n"
             "   FORBIDDEN: lowercase words, quoted strings, invented symbols.\n"
+            "   NEVER invent symbol names. Every symbol MUST appear in the primitive list above.\n"
+            "   For unknown quantities use #var or NUMERIC_VALUE — NEVER use X, LET, VARIABLE,\n"
+            "   NUMBER, HAVE, HAS, EAT, GIVE, AGE, DURATION, YEARS, I, UNCERTAIN_EXPRESSION.\n"
             "2. Applications: (HEAD arg1 arg2 ...) — parentheses required around every call.\n"
             "   BAD:  ARITH_ADD 3 4       GOOD: (ARITH_ADD 3 4)\n"
             "3. Arity must match the primitive exactly.\n"
@@ -384,8 +387,9 @@ GRAMMAR_SUMMARY = (
     "  VAR  ::= lowercase identifier\n"
     "  TYPE ::= Entity, Relation, Property, Process, Logical, Numeric, Modal\n\n"
     "Arithmetic operators (use THESE, not PLUS/MINUS/DIVIDE/EQUALS):\n"
-    "  (ARITH_ADD a b)      (ARITH_SUBTRACT a b)  (ARITH_MULTIPLY a b)\n"
-    "  (ARITH_DIVIDE a b)   (ARITH_EQUALS a b)    (ARITH_MODULO a b)\n"
+    "  (ARITH_ADD a b)        (ARITH_SUBTRACT a b)    (ARITH_MULTIPLY a b)\n"
+    "  (ARITH_DIVIDE a b)     (ARITH_EQUALS a b)      (ARITH_MODULO a b)\n"
+    "  (ARITH_LESS_THAN a b)  (ARITH_GREATER_THAN a b)(ARITH_ASSIGN #var val)\n"
     "Numbers as arguments: use bare NUMBER literals — (ARITH_ADD 3 4) not (ARITH_ADD THREE FOUR)\n"
     "Percentages: 0.65 is a valid NUMBER atom — (ARITH_MULTIPLY #total 0.65)\n"
     "Variables: #var (lowercase after #) for intermediate values — NOT bare UPPERCASE like TOTAL\n"
@@ -458,6 +462,12 @@ def translate_example(
     compression_ratio = neuralese_tokens / max(original_tokens, 1)
 
     if compression_ratio > COMPRESSION_MAX_RATIO:
+        return None
+
+    # Discard trivially short CoTs that compress worse than English —
+    # training on them teaches the model Neuralese is worse for simple arithmetic
+    cot_words = len(cot.split())
+    if cot_words < 25 and compression_ratio > 1.0:
         return None
 
     return {

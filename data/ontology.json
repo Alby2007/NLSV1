@@ -245,8 +245,8 @@
     "gloss": "The connection between an individual and an organization indicating membership or association.",
     "confidence": 0.85,
     "example_tokens": [
-      "\u017c",
-      "\u010d"
+      "ż",
+      "č"
     ],
     "type_path": [
       "Relation",
@@ -1218,7 +1218,7 @@
     "gloss": "Refers to abstract ideas and principles in mathematics.",
     "confidence": 0.95,
     "example_tokens": [
-      "\u2022"
+      "•"
     ],
     "type_path": [
       "Property",
@@ -1768,7 +1768,7 @@
     "gloss": "A place or area on Earth with distinct physical and human characteristics.",
     "confidence": 0.95,
     "example_tokens": [
-      "\u00e2nd",
+      "ând",
       "ed",
       "uel",
       "gar",
@@ -1937,7 +1937,7 @@
     "confidence": 0.95,
     "example_tokens": [
       "-",
-      "\u2013"
+      "–"
     ],
     "type_path": [
       "Property",
@@ -2133,7 +2133,7 @@
     "gloss": "A mathematical expression involving numbers and operators.",
     "confidence": 0.95,
     "example_tokens": [
-      "\ufffd"
+      "�"
     ],
     "type_path": [
       "Numeric",
@@ -3742,7 +3742,7 @@
     "gloss": "A process where a person has a limited time period to claim an answer or response.",
     "confidence": 0.95,
     "example_tokens": [
-      "\u2019"
+      "’"
     ],
     "type_path": [
       "Process",
@@ -4062,7 +4062,7 @@
       "eline",
       "y",
       "ca",
-      "\u00e9e",
+      "ée",
       "stance",
       "iona",
       "antha"
@@ -4551,7 +4551,7 @@
     "id": "P0406",
     "symbol": "MATHEMATICAL_INEQUALITY",
     "type": "Numeric",
-    "gloss": "A statement that compares two values using symbols such as <, >, \u2264, or \u2265.",
+    "gloss": "A statement that compares two values using symbols such as <, >, ≤, or ≥.",
     "confidence": 1.0,
     "example_tokens": [
       "geq",
@@ -4919,7 +4919,7 @@
     "gloss": "Information about the death of a person, including their lifespan and notable identity.",
     "confidence": 0.95,
     "example_tokens": [
-      "\u2013"
+      "–"
     ],
     "type_path": [
       "Property",
@@ -5163,15 +5163,15 @@
     "gloss": "A collection or series of periodicals focusing on a specific subject area.",
     "confidence": 0.85,
     "example_tokens": [
-      "\u2192",
+      "→",
       "->",
       "+",
       ";",
-      "\ufffd",
+      "�",
       "/",
-      "\u2022",
+      "•",
       ">",
-      "\u2191"
+      "↑"
     ],
     "type_path": [
       "Entity",
@@ -6927,7 +6927,7 @@
     "confidence": 0.85,
     "example_tokens": [
       ".",
-      "\u2022",
+      "•",
       ":",
       ")"
     ],
@@ -8003,7 +8003,7 @@
     "gloss": "The act of creating a new account, often seen in user interfaces or registration processes.",
     "confidence": 0.75,
     "example_tokens": [
-      "\u2022"
+      "•"
     ],
     "type_path": [
       "Process",
@@ -8176,14 +8176,14 @@
     "gloss": "A place or area, often a named settlement such as a town, city, or district.",
     "confidence": 0.92,
     "example_tokens": [
-      "\u0411",
-      "\u0422",
-      "\ufffd",
-      "\u0645",
-      "\u0634",
-      "\u03c2",
-      "\u30de",
-      "\u041c"
+      "Б",
+      "Т",
+      "�",
+      "م",
+      "ش",
+      "ς",
+      "マ",
+      "М"
     ],
     "type_path": [
       "Entity",
@@ -9670,7 +9670,7 @@
     "confidence": 0.95,
     "example_tokens": [
       "\"",
-      "\u201c"
+      "“"
     ],
     "type_path": [
       "Property",
@@ -11682,7 +11682,7 @@
     "example_tokens": [
       "times",
       "cdot",
-      "\u00d7",
+      "×",
       "*"
     ],
     "type_path": [
@@ -12117,7 +12117,7 @@
     "id": "P1056",
     "symbol": "MATHEMATICAL_CONSTANT_PI",
     "type": "Numeric",
-    "gloss": "The mathematical constant pi (\u03c0) representing the ratio of a circle's circumference to its diameter.",
+    "gloss": "The mathematical constant pi (π) representing the ratio of a circle's circumference to its diameter.",
     "confidence": 1.0,
     "example_tokens": [
       "pi"
@@ -12458,7 +12458,7 @@
     "gloss": "A title or name associated with a musical track or song.",
     "confidence": 0.85,
     "example_tokens": [
-      "\ufffd"
+      "�"
     ],
     "type_path": [
       "Property",
@@ -13285,7 +13285,7 @@
     "gloss": "Descriptions of individuals, including their lifespan and nationality or profession.",
     "confidence": 0.95,
     "example_tokens": [
-      "\u2013"
+      "–"
     ],
     "type_path": [
       "Entity",
@@ -17386,7 +17386,7 @@
     "gloss": "Theoretical and experimental studies of rare decays involving subatomic particles like kaons and B-mesons into specific muonic or chi meson states.",
     "confidence": 0.95,
     "example_tokens": [
-      "\u2192"
+      "→"
     ],
     "type_path": [
       "Process",
@@ -17739,7 +17739,7 @@
     "confidence": 0.95,
     "example_tokens": [
       "",
-      "\ufffd"
+      "�"
     ],
     "type_path": [
       "Process",
@@ -18117,7 +18117,7 @@
     "gloss": "A concept related to energetic materials and various chemical practices and theories.",
     "confidence": 0.85,
     "example_tokens": [
-      "\u00bb"
+      "»"
     ],
     "type_path": [
       "Entity",
@@ -18300,7 +18300,7 @@
     "gloss": "A specific type of category in advanced mathematics, particularly within infinity-category theory or higher-dimensional category theory.",
     "confidence": 0.95,
     "example_tokens": [
-      "\ufffd"
+      "�"
     ],
     "type_path": [
       "Entity",
@@ -19493,7 +19493,7 @@
     "gloss": "A property referring to a range of pages within a document or article.",
     "confidence": 0.95,
     "example_tokens": [
-      "\u2013",
+      "–",
       "-",
       "--"
     ],
@@ -19663,7 +19663,7 @@
     "confidence": 0.95,
     "example_tokens": [
       "-",
-      "\u2013",
+      "–",
       "as"
     ],
     "type_path": [
@@ -19855,7 +19855,7 @@
     "confidence": 0.75,
     "example_tokens": [
       "\"",
-      "\u201d",
+      "”",
       "'"
     ],
     "type_path": [
@@ -20127,7 +20127,7 @@
     "example_tokens": [
       ",",
       ".",
-      "\u2022",
+      "•",
       "4",
       "5",
       "6",
@@ -20225,7 +20225,7 @@
       "League",
       "ership",
       "liga",
-      "isi\u00f3n",
+      "isión",
       "league",
       "Division",
       "Cup"
@@ -22334,7 +22334,7 @@
     "gloss": "The organization and formatting conventions within documents or data files.",
     "confidence": 0.92,
     "example_tokens": [
-      "\u00b6"
+      "¶"
     ],
     "type_path": [
       "Property",
@@ -22411,8 +22411,8 @@
     "confidence": 0.95,
     "example_tokens": [
       "...",
-      "\u2026.",
-      "\u2026"
+      "….",
+      "…"
     ],
     "type_path": [
       "Numeric",
@@ -22920,9 +22920,9 @@
     "gloss": "A place or area with specific geographical characteristics and significance.",
     "confidence": 0.95,
     "example_tokens": [
-      "\u2018",
+      "‘",
       "'",
-      "\ufffd"
+      "�"
     ],
     "type_path": [
       "Entity",
@@ -23022,16 +23022,16 @@
     "gloss": "A place or area on Earth with distinct physical and human characteristics.",
     "confidence": 0.95,
     "example_tokens": [
-      "\u021b",
+      "ț",
       "ine",
       "ure",
-      "\u0103",
-      "\u0219",
+      "ă",
+      "ș",
       "i",
-      "\u015f",
+      "ş",
       "ules",
       "a",
-      "\u0163"
+      "ţ"
     ],
     "type_path": [
       "Entity",
@@ -23561,7 +23561,7 @@
     "id": "P2072",
     "symbol": "CONTRADICTS",
     "type": "Logical",
-    "gloss": "X and Y cannot both hold \u2014 they are mutually exclusive",
+    "gloss": "X and Y cannot both hold — they are mutually exclusive",
     "confidence": 1.0,
     "example_tokens": [],
     "source": "hand_seeded",
@@ -23968,6 +23968,30 @@
     "type": "Numeric",
     "subtype": "Temporal",
     "gloss": "Duration measured in months",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "ARITH_LESS_THAN",
+    "type": "Logical",
+    "subtype": "NumericRelation",
+    "gloss": "numeric less-than comparison between two values",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "ARITH_GREATER_THAN",
+    "type": "Logical",
+    "subtype": "NumericRelation",
+    "gloss": "numeric greater-than comparison between two values",
+    "centroid": null,
+    "confidence": 1.0
+  },
+  {
+    "symbol": "ARITH_ASSIGN",
+    "type": "Process",
+    "subtype": "CognitiveProcess",
+    "gloss": "assign a computed numeric value to a named quantity or variable",
     "centroid": null,
     "confidence": 1.0
   }

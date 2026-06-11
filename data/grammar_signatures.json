@@ -4216,5 +4216,35 @@
       "Numeric"
     ],
     "range": "Numeric"
+  },
+  {
+    "symbol": "ARITH_LESS_THAN",
+    "arity": 2,
+    "arg_types": [
+      "Numeric",
+      "Numeric"
+    ],
+    "return_type": "Logical",
+    "description": "(ARITH_LESS_THAN a b) — true when a < b"
+  },
+  {
+    "symbol": "ARITH_GREATER_THAN",
+    "arity": 2,
+    "arg_types": [
+      "Numeric",
+      "Numeric"
+    ],
+    "return_type": "Logical",
+    "description": "(ARITH_GREATER_THAN a b) — true when a > b"
+  },
+  {
+    "symbol": "ARITH_ASSIGN",
+    "arity": 2,
+    "arg_types": [
+      "Entity",
+      "Numeric"
+    ],
+    "return_type": "Process",
+    "description": "(ARITH_ASSIGN #label value) — bind a value to a named quantity"
   }
 ]
