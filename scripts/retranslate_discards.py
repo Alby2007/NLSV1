@@ -128,7 +128,13 @@ def main():
         save_checkpoint(checkpoint)
 
     # ── Final report ──────────────────────────────────────────────────────
-    final_corpus = [json.loads(l) for l in CORPUS_PATH.read_text(encoding='utf-8').splitlines() if l.strip()]
+    good_lines = [l for l in CORPUS_PATH.read_text(encoding='utf-8').splitlines() if l.strip()]
+    final_corpus = []
+    for l in good_lines:
+        try:
+            final_corpus.append(json.loads(l))
+        except json.JSONDecodeError:
+            pass
     recovered_examples = [e for e in final_corpus if e['question'].strip() not in
                           {e2['question'].strip() for e2 in existing}]
 
