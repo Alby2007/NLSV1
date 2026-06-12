@@ -127,7 +127,8 @@ def translate_step(
             "   FORBIDDEN: lowercase words, quoted strings, invented symbols.\n"
             "   NEVER invent symbol names. Every symbol MUST appear in the primitive list above.\n"
             "   For unknown quantities use #var or NUMERIC_VALUE — NEVER use X, LET, VARIABLE,\n"
-            "   NUMBER, HAVE, HAS, EAT, GIVE, AGE, DURATION, YEARS, I, UNCERTAIN_EXPRESSION.\n"
+            "   NUMBER, HAVE, HAS, EAT, GIVE, AGE, DURATION, YEARS, I, UNCERTAIN_EXPRESSION,\n"
+            "   HASH, ARITH_FLOOR, ARITH_EQ, ARITH_SUB, ARITH_RESULT, BUY, QUANTITY, A.\n"
             "2. Applications: (HEAD arg1 arg2 ...) — parentheses required around every call.\n"
             "   BAD:  ARITH_ADD 3 4       GOOD: (ARITH_ADD 3 4)\n"
             "3. Arity must match the primitive exactly.\n"
@@ -144,6 +145,12 @@ def translate_step(
             "  BAD:  (ARITH_ADD 3 4) (ARITH_EQUALS #x 7)   ← two bare expressions, invalid\n"
             "  GOOD: [(ARITH_ADD 3 4) (ARITH_EQUALS #x 7)] ← wrapped in sequence\n\n"
             "  Use NUMERIC_RESULT for the final answer atom, RUNNING_TOTAL for accumulated sums.\n\n"
+            "TEMPORAL_CHANGE takes EXACTLY 2 args — (TEMPORAL_CHANGE before_state after_state):\n"
+            "  BAD:  (TEMPORAL_CHANGE PROCESS)                         ← only 1 arg, invalid\n"
+            "  BAD:  (TEMPORAL_CHANGE EVENT START END DURATION)        ← too many args, invalid\n"
+            "  GOOD: (TEMPORAL_CHANGE #initial_count #final_count)     ← 2 args\n"
+            "  GOOD: (TEMPORAL_CHANGE WORK_STATE REST_STATE)           ← 2 args\n"
+            "  If expressing a quantity changing over time, use: [(ARITH_MULTIPLY #rate #time) (ARITH_EQUALS #result ...)]\n\n"
             "Return ONLY the Neuralese expression. No explanation, no markdown, no prose."
         )
 
