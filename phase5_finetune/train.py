@@ -70,6 +70,8 @@ NEURALESE_TOKENS = [
     "DIVIDE", "EQUALS", "PLUS", "MULTIPLY",
     # Rare but valid
     "UNCERTAIN_EXPRESSION", "SHIRT",
+    # Abstract quantity primitives (added to redirect hallucinated domain nouns)
+    "NUMERIC_COUNT", "NUMERIC_RATE", "UNIT_COST", "NUMERIC_DURATION", "NUMERIC_QUANTITY",
 ]
 
 

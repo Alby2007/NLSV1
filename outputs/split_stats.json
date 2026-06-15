@@ -1,0 +1,18 @@
+{
+  "total_survivors": 6294,
+  "train_n": 5639,
+  "test_n": 655,
+  "train_by_difficulty": {
+    "medium": 1530,
+    "hard": 95,
+    "easy": 4014
+  },
+  "test_by_difficulty": {
+    "medium": 169,
+    "easy": 446,
+    "hard": 40
+  },
+  "seed": 42,
+  "hard_test_target": 40,
+  "easy_medium_test_ratio": 0.1
+}
