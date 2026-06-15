@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import (
     TRANSLATION_MAX_RETRIES, COMPRESSION_MAX_RATIO,
     SOURCE_DATASETS, ONTOLOGY_PATH,
-    TRAIN_CORPUS_PATH, CORPUS_STATS_PATH,
+    TRAIN_CORPUS_PATH, CORPUS_STATS_PATH, DISCARDS_LOG_PATH,
 )
 from lark.exceptions import LarkError
 from phase3_grammar.parser import validate, get_signatures
@@ -416,14 +416,26 @@ def translate_example(
     answer: str,
     primitives: list[dict],
     sigs,
-) -> dict | None:
+    source: str = "unknown",
+) -> tuple[dict | None, str | None]:
+    """Translate one example.
+
+    Returns (result_dict, None) on success, or (None, discard_reason) on failure.
+    discard_reason is one of:
+      NO_STEPS           — CoT decomposition produced nothing
+      STEP_PARSE_FAIL    — a step could not be parsed after all retries
+      CHAIN_PARSE_FAIL   — assembled chain failed grammar validation
+      COMPRESSION_HIGH   — compression_ratio > COMPRESSION_MAX_RATIO
+      COMPRESSION_SHORT  — short CoT that is longer than English in Neuralese
+    """
     original_tokens = count_tokens_approx(cot)
 
     steps = decompose_cot(client, question, cot)
     if not steps:
-        return None
+        return None, "NO_STEPS"
 
     validated_steps = []
+    last_parse_error = ""
     for step in steps:
         relevant = fuzzy_match_primitives(step, primitives)
         if not relevant:
@@ -449,6 +461,7 @@ def translate_example(
             # error messages (ARITY_MISMATCH, UNKNOWN_SYMBOL, PARSE_ERROR)
             # reliably change the generation.
             parse_error = err or "INVALID_EXPRESSION"
+            last_parse_error = parse_error
             prior_candidate = candidate
             logger.debug(
                 f"Step translation attempt {attempt + 1}/{TRANSLATION_MAX_RETRIES} "
@@ -456,26 +469,26 @@ def translate_example(
             )
 
         if expr is None:
-            return None
+            return None, f"STEP_PARSE_FAIL:{last_parse_error}"
 
         validated_steps.append(expr)
 
     chain = assemble_chain(validated_steps)
     ok, err = validate(chain, sigs)
     if not ok:
-        return None
+        return None, f"CHAIN_PARSE_FAIL:{err or 'unknown'}"
 
     neuralese_tokens = count_tokens_approx(chain)
     compression_ratio = neuralese_tokens / max(original_tokens, 1)
 
     if compression_ratio > COMPRESSION_MAX_RATIO:
-        return None
+        return None, f"COMPRESSION_HIGH:{compression_ratio:.3f}"
 
     # Discard trivially short CoTs that compress worse than English —
     # training on them teaches the model Neuralese is worse for simple arithmetic
     cot_words = len(cot.split())
     if cot_words < 25 and compression_ratio > 1.0:
-        return None
+        return None, f"COMPRESSION_SHORT:{compression_ratio:.3f}"
 
     return {
         "question": question,
@@ -484,7 +497,8 @@ def translate_example(
         "original_cot": cot,
         "compression_ratio": round(compression_ratio, 4),
         "step_count": len(validated_steps),
-    }
+        "source": source,
+    }, None
 
 
 def load_dataset_examples(dataset_cfg: dict) -> list[tuple[str, str, str]]:
@@ -563,7 +577,8 @@ def main():
 
     # Open corpus file in append mode — each validated example written immediately.
     # Crash-safe: re-running skips already_written examples from the front of each dataset.
-    with open(TRAIN_CORPUS_PATH, "a", encoding="utf-8") as corpus_f:
+    with open(TRAIN_CORPUS_PATH, "a", encoding="utf-8") as corpus_f, \
+         open(DISCARDS_LOG_PATH, "a", encoding="utf-8") as discard_f:
         skip_remaining = already_written  # global skip counter across all datasets
 
         for dataset_cfg in SOURCE_DATASETS:
@@ -573,6 +588,7 @@ def main():
             print(f"  Loaded {len(examples)} examples.")
 
             success, discarded = 0, 0
+            discard_reason_counts: dict[str, int] = {}
 
             try:
                 for q, cot, ans in tqdm(examples, desc=f"  Translating {name}"):
@@ -580,7 +596,9 @@ def main():
                         skip_remaining -= 1
                         continue
 
-                    result = translate_example(client, q, cot, ans, primitives, sigs)
+                    result, discard_reason = translate_example(
+                        client, q, cot, ans, primitives, sigs, source=name
+                    )
                     if result is not None:
                         corpus_f.write(json.dumps(result) + "\n")
                         corpus_f.flush()
@@ -615,6 +633,18 @@ def main():
                                 logger.warning(f"Git push failed at {total_written}: {e.stderr.decode().strip()[:200]}")
                     else:
                         discarded += 1
+                        # structured discard log
+                        reason_key = discard_reason.split(":")[0] if discard_reason else "UNKNOWN"
+                        discard_reason_counts[reason_key] = discard_reason_counts.get(reason_key, 0) + 1
+                        discard_record = {
+                            "question": q,
+                            "cot": cot,
+                            "answer": ans,
+                            "source": name,
+                            "discard_reason": discard_reason or "UNKNOWN",
+                        }
+                        discard_f.write(json.dumps(discard_record) + "\n")
+                        discard_f.flush()
             except KeyboardInterrupt:
                 logger.info(f"Interrupted during {name} — {total_written} examples saved so far.")
                 break
@@ -623,8 +653,12 @@ def main():
                 "total": len(examples),
                 "success": success,
                 "discard_rate": round(1 - success / max(len(examples), 1), 3),
+                "discard_reasons": discard_reason_counts,
             }
             print(f"  {name}: {success}/{len(examples)} valid ({stats[name]['discard_rate']:.1%} discarded)")
+            if discard_reason_counts:
+                for reason, count in sorted(discard_reason_counts.items(), key=lambda x: -x[1]):
+                    print(f"    {reason}: {count}")
 
     # Read back compression ratios from the written file for summary stats.
     all_ratios = []

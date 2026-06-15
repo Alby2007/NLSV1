@@ -21,6 +21,7 @@ PRIMITIVES_PATH = DATA_DIR / "primitives.json"
 ONTOLOGY_PATH = DATA_DIR / "ontology.json"
 GRAMMAR_SIGNATURES_PATH = DATA_DIR / "grammar_signatures.json"
 TRAIN_CORPUS_PATH = CORPUS_DIR / "train.jsonl"
+DISCARDS_LOG_PATH = CORPUS_DIR / "discards.jsonl"
 CORPUS_STATS_PATH = CORPUS_DIR / "stats.json"
 EVAL_RESULTS_PATH = OUTPUTS_DIR / "eval_results.json"
 
@@ -76,8 +77,8 @@ SOURCE_DATASETS = [
 
 # ── Phase 5: Fine-tuning ──────────────────────────────────────────────────────
 FINETUNE_MODEL = "Qwen/Qwen2.5-7B-Instruct"
-LORA_RANK = 16
-LORA_ALPHA = 32
+LORA_RANK = 32          # increased from 16 — model must learn new symbolic output patterns
+LORA_ALPHA = 64         # keep alpha = 2×rank
 LORA_TARGET_MODULES = ["q_proj", "k_proj", "v_proj", "o_proj"]
 TRAIN_BATCH_SIZE = 2
 GRAD_ACCUMULATION_STEPS = 16   # effective batch = 32

@@ -82,22 +82,26 @@ def main():
             checkpoint['completed'] = i + 1
             continue
 
-        result = translate_example(
+        result, discard_reason = translate_example(
             client=client,
             question=ex['question'],
             cot=ex['cot'],
             answer=ex['answer'],
             primitives=primitives,
             sigs=sigs,
+            source=ex.get('source', 'unknown'),
         )
 
         if result is not None:
             new_examples.append(result)
             existing_questions.add(q)
             recovered_total += 1
+            failure_reasons['PASS'] += 1
             log.info(f'[{i+1}/{len(discards)}] PASS  ratio={result["compression_ratio"]:.3f}  recovered={recovered_total}')
         else:
-            log.debug(f'[{i+1}/{len(discards)}] FAIL  q={ex["question"][:60]}')
+            reason_key = discard_reason.split(':')[0] if discard_reason else 'UNKNOWN'
+            failure_reasons[reason_key] += 1
+            log.debug(f'[{i+1}/{len(discards)}] FAIL  reason={discard_reason}  q={ex["question"][:60]}')
 
         checkpoint['completed'] = i + 1
         checkpoint['recovered'] = recovered_total
@@ -154,6 +158,9 @@ def main():
         hard   = sum(1 for e in recovered_examples[:recovered_total] if len(e['original_cot'].split()) >= 120)
         log.info(f'  Recovered compression: mean={mean_r:.3f}  std={std_r:.3f}')
         log.info(f'  Difficulty split: easy={easy}  medium={medium}  hard={hard}')
+    log.info('  Discard reason breakdown:')
+    for reason, count in sorted(failure_reasons.items(), key=lambda x: -x[1]):
+        log.info(f'    {reason}: {count}')
     log.info('=' * 60)
 
 

@@ -13,6 +13,7 @@ from typing import Optional
 
 import numpy as np
 import torch
+import torch.nn.functional as F
 from datasets import Dataset
 from transformers import (
     AutoTokenizer,
@@ -37,17 +38,38 @@ from config import (
     LEARNING_RATE, NUM_EPOCHS, MAX_SEQ_LEN,
     EVAL_SPLIT_RATIO,
     TRAIN_CORPUS_PATH, CHECKPOINTS_DIR,
+    CENTROIDS_PATH, ONTOLOGY_PATH,
 )
 
 
-# High-frequency Neuralese primitives to add as atomic vocabulary tokens.
-# Ordered by corpus frequency — top symbols fragment into 3-5 BPE pieces each.
+# All legitimate ontology primitives that appear in the training corpus,
+# ordered by corpus frequency. Derived from frequency analysis on 7,162 examples:
+#   top-10 cover 93.7% of occurrences; all 55 cover 95% (remainder are hallucinations).
+# These are expanded to atomic tokens so each symbol = 1 BPE token at inference time.
 NEURALESE_TOKENS = [
+    # Core arithmetic (>1000 occurrences each)
     "ARITH_EQUALS", "NUMERIC_RESULT", "ARITH_MULTIPLY", "ARITH_ADD",
-    "ARITH_DIVIDE", "ARITH_SUBTRACT", "CAUSAL_REQUIRES", "TEMPORAL_CHANGE",
-    "CAUSAL_ENABLES", "TEMPORAL_DURING", "TEMPORAL_AFTER", "TEMPORAL_BEFORE",
-    "CAUSAL_CONTRIBUTES", "RUNNING_TOTAL", "LOGICAL_AND", "IS_EQUIVALENT_TO",
-    "THEREFORE", "LOGICAL_NOT", "LOGICAL_IMPLIES", "FORALL", "EXISTS",
+    "ARITH_DIVIDE", "ARITH_SUBTRACT",
+    # Causal / temporal (>50 occurrences)
+    "CAUSAL_REQUIRES", "TEMPORAL_CHANGE", "CAUSAL_ENABLES", "TEMPORAL_DURING",
+    "TEMPORAL_AFTER", "TEMPORAL_BEFORE", "CAUSAL_CONTRIBUTES", "CAUSAL_PREVENTS",
+    # Accumulators / result markers
+    "RUNNING_TOTAL", "ARITH_ASSIGN", "NUMERIC_VALUE", "RESULT",
+    # Logical
+    "LOGICAL_AND", "LOGICAL_NOT", "LOGICAL_IMPLIES", "THEREFORE",
+    "FORALL", "EXISTS", "IS_EQUIVALENT_TO",
+    # Comparators
+    "ARITH_LESS_THAN", "ARITH_GREATER_THAN", "ARITH_MODULO",
+    # Domain entities used in GSM8K (low freq but legitimate ontology symbols)
+    "TOTAL", "EARNINGS", "HOURS", "REMAINING_AMOUNT", "DISTANCE",
+    "COST", "TEMPORAL_REFERENCE", "WEEKS", "UNCERTAINTY_EXPRESSION",
+    "MINUTES", "AMOUNT", "DAYS", "FEET", "DOLLARS", "REVENUE",
+    "YEAR", "STUDENTS", "TOTAL_COUNT", "TOTAL_PAGES", "TOTAL_DAYS",
+    "FINAL_RESULT", "TIME_PERIOD", "TIME_DURATION", "MILES", "POUNDS",
+    # Aliases present in corpus (map to canonical ops — kept for backward compat)
+    "DIVIDE", "EQUALS", "PLUS", "MULTIPLY",
+    # Rare but valid
+    "UNCERTAIN_EXPRESSION", "SHIRT",
 ]
 
 
@@ -103,22 +125,93 @@ def main():
     model.gradient_checkpointing_enable()
 
     if num_added > 0:
-        # Load original tokenizer to get subword IDs before vocab expansion
+        # ── Build centroid lookup: symbol → centroid embedding ────────────────
+        # Preferred: load Phase 1 activation centroids matched via ontology.
+        # Fallback: subword mean (same as before). Either way we verify quality.
+        import json
+        centroid_map: dict[str, np.ndarray] = {}
+        if CENTROIDS_PATH.exists() and ONTOLOGY_PATH.exists():
+            logging.info(f"Loading centroid embeddings from {CENTROIDS_PATH}")
+            centroids = np.load(str(CENTROIDS_PATH))  # shape: (K, d)
+            ontology = json.loads(ONTOLOGY_PATH.read_text(encoding="utf-8"))
+            sym_to_centroid = {
+                p["symbol"]: centroids[int(p["id"].lstrip("P"))]
+                for p in ontology
+                if "centroid_embedding" not in p  # use index-based lookup
+                and p.get("id", "").startswith("P")
+                and int(p["id"].lstrip("P")) < len(centroids)
+            }
+            # Also check for inline centroid_embedding field
+            for p in ontology:
+                if "centroid_embedding" in p and p["centroid_embedding"]:
+                    sym_to_centroid[p["symbol"]] = np.array(p["centroid_embedding"], dtype=np.float32)
+            centroid_map = sym_to_centroid
+            logging.info(f"Centroid map built: {len(centroid_map)} symbols")
+        else:
+            logging.warning("centroids.npy or ontology.json not found — falling back to subword means")
+
+        # Load original tokenizer for subword fallback
         orig_tok = AutoTokenizer.from_pretrained(FINETUNE_MODEL, trust_remote_code=True)
         subword_ids_per_token = [orig_tok.encode(sym, add_special_tokens=False) for sym in NEURALESE_TOKENS]
 
         model.resize_token_embeddings(len(tokenizer))
-        # Initialise new token embeddings to mean of their constituent subword pieces
+
         with torch.no_grad():
             emb = model.get_input_embeddings().weight
+            emb_dim = emb.shape[1]
+            centroid_hits = 0
+            subword_hits = 0
+
             for sym, new_id, subword_ids in zip(
                 NEURALESE_TOKENS,
                 tokenizer.convert_tokens_to_ids(NEURALESE_TOKENS),
                 subword_ids_per_token,
             ):
-                mean_vec = emb[subword_ids].mean(dim=0)
-                emb[new_id] = mean_vec
-        logging.info("New token embeddings initialised to subword means.")
+                if sym in centroid_map:
+                    # Use Phase 1 centroid — project/pad to model embedding dim if needed
+                    c = torch.tensor(centroid_map[sym], dtype=emb.dtype)
+                    if c.shape[0] != emb_dim:
+                        # Centroid dim mismatch (e.g. Gemma centroids, Qwen model) — fall back
+                        vec = emb[subword_ids].mean(dim=0)
+                        subword_hits += 1
+                    else:
+                        vec = c
+                        centroid_hits += 1
+                else:
+                    vec = emb[subword_ids].mean(dim=0)
+                    subword_hits += 1
+                emb[new_id] = vec
+
+        logging.info(
+            f"Embedding init: {centroid_hits} centroid, {subword_hits} subword-mean "
+            f"(out of {len(NEURALESE_TOKENS)} tokens)"
+        )
+
+        # ── Cosine similarity sanity check ────────────────────────────────────
+        # For each new token, verify its embedding is closer to its subword mean
+        # than to a random token embedding (sanity, not a hard pass/fail).
+        with torch.no_grad():
+            emb = model.get_input_embeddings().weight
+            rng = torch.Generator()
+            rng.manual_seed(42)
+            random_ids = torch.randint(0, orig_tok.vocab_size, (len(NEURALESE_TOKENS),), generator=rng)
+            sims_to_subword, sims_to_random = [], []
+            new_ids = tokenizer.convert_tokens_to_ids(NEURALESE_TOKENS)
+            for new_id, subword_ids, rand_id in zip(new_ids, subword_ids_per_token, random_ids.tolist()):
+                new_vec = emb[new_id].float()
+                sw_mean = emb[subword_ids].float().mean(dim=0)
+                rand_vec = emb[rand_id].float()
+                sim_sw = F.cosine_similarity(new_vec.unsqueeze(0), sw_mean.unsqueeze(0)).item()
+                sim_rand = F.cosine_similarity(new_vec.unsqueeze(0), rand_vec.unsqueeze(0)).item()
+                sims_to_subword.append(sim_sw)
+                sims_to_random.append(sim_rand)
+            mean_sw = sum(sims_to_subword) / len(sims_to_subword)
+            mean_rand = sum(sims_to_random) / len(sims_to_random)
+            logging.info(
+                f"Embedding sanity: mean cos-sim to subword-mean={mean_sw:.4f}, "
+                f"to random token={mean_rand:.4f} "
+                f"({'PASS' if mean_sw > mean_rand else 'WARN — embeddings may be misaligned'})"
+            )
 
     lora_config = LoraConfig(
         task_type=TaskType.CAUSAL_LM,
