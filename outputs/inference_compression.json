@@ -1,0 +1,16 @@
+[
+  {
+    "dataset": "gsm8k",
+    "condition_A_mean_tokens": 98.4,
+    "condition_B_mean_tokens": 88.8,
+    "inference_compression_ratio": 0.9024,
+    "compression_note": "Neuralese uses 90.24% of English CoT tokens at inference (compressed)"
+  },
+  {
+    "dataset": "MATH-500",
+    "condition_A_mean_tokens": 200.5,
+    "condition_B_mean_tokens": 147.6,
+    "inference_compression_ratio": 0.7362,
+    "compression_note": "Neuralese uses 73.62% of English CoT tokens at inference (compressed)"
+  }
+]
