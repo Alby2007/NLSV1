@@ -17,7 +17,7 @@ from lark.exceptions import UnexpectedInput
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
-from config import GRAMMAR_PATH, GRAMMAR_SIGNATURES_PATH
+from config import GRAMMAR_PATH, GRAMMAR_SIGNATURES_PATH, ONTOLOGY_PATH
 
 
 class NeuraleseParseError(Exception):
@@ -124,6 +124,96 @@ def typecheck(tree: Tree, sigs: dict[str, Signature] | None = None) -> bool:
             _check_application(subtree, sigs)
 
     return True
+
+
+# ── Strict domain/range type checking ────────────────────────────────────────
+# Loose typecheck only enforces arity + symbol existence. Strict mode also
+# verifies that each argument's inferred type matches the signature's domain
+# (with subtype rules: a domain of "Entity" accepts "ConcreteEntity", not vice
+# versa). Un-inferable nodes return None and pass leniently.
+
+_ontology: dict[str, list[str]] | None = None
+
+
+def get_ontology() -> dict[str, list[str]]:
+    """symbol -> type_path, e.g. CONCRETE_THING -> ['Entity', 'ConcreteEntity']."""
+    global _ontology
+    if _ontology is None:
+        _ontology = {}
+        if ONTOLOGY_PATH.exists():
+            for p in json.loads(ONTOLOGY_PATH.read_text(encoding="utf-8")):
+                _ontology[p["symbol"]] = p.get("type_path") or [p.get("type", "Unknown")]
+    return _ontology
+
+
+def _infer_path(node, sigs: dict[str, Signature], ontology: dict[str, list[str]]) -> list[str] | None:
+    """Infer the type path of an expr subtree. None = can't determine."""
+    if isinstance(node, Token):
+        return None
+    if node.data == "atom":
+        for tok in node.children:
+            if isinstance(tok, Token):
+                if tok.type == "NUMBER":
+                    return ["Numeric"]
+                if tok.type == "SYMBOL":
+                    return ontology.get(str(tok))
+        return None
+    if node.data == "application":
+        head = next((str(c) for c in node.children if isinstance(c, Token) and c.type == "HEAD"), None)
+        if head and head in sigs:
+            return [sigs[head].range]
+        return None
+    if node.data == "assertion":
+        inner = next((c for c in node.children if isinstance(c, Tree)), None)
+        return _infer_path(inner, sigs, ontology) if inner is not None else None
+    if node.data == "sequence":
+        return ["Sequence"]
+    return None
+
+
+def _check_application_strict(tree: Tree, sigs: dict[str, Signature], ontology: dict[str, list[str]]):
+    """Arity + domain type check for a single application node."""
+    _check_application(tree, sigs)  # arity + UNKNOWN_SYMBOL first
+
+    head_token = next((str(c) for c in tree.children if isinstance(c, Token) and c.type == "HEAD"), None)
+    if not head_token or head_token not in sigs:
+        return
+    sig = sigs[head_token]
+    arg_exprs = [c for c in tree.children if isinstance(c, Tree)]
+
+    for i, (arg, domain_entry) in enumerate(zip(arg_exprs, sig.domain)):
+        arg_path = _infer_path(arg, sigs, ontology)
+        if arg_path is None:
+            continue  # lenient on un-inferable
+        allowed = domain_entry.split("|") if isinstance(domain_entry, str) else [domain_entry]
+        if not any(m in arg_path for m in allowed):
+            raise NeuraleseTypeError(
+                f"TYPE_ERROR: {head_token} arg{i+1} expects {domain_entry}, got {'/'.join(arg_path)}"
+            )
+
+
+def typecheck_strict(tree: Tree, sigs: dict[str, Signature] | None = None) -> bool:
+    if sigs is None:
+        sigs = get_signatures()
+    ontology = get_ontology()
+
+    for subtree in tree.iter_subtrees():
+        if subtree.data == "application":
+            _check_application_strict(subtree, sigs, ontology)
+
+    return True
+
+
+def validate_strict(expr_str: str, sigs: dict[str, Signature] | None = None) -> tuple[bool, str | None]:
+    """Strict validation: arity + UNKNOWN_SYMBOL + domain/range types."""
+    try:
+        tree = parse(expr_str)
+        typecheck_strict(tree, sigs)
+        return True, None
+    except (NeuraleseParseError, NeuraleseTypeError) as e:
+        return False, str(e)
+    except Exception as e:
+        return False, f"UNEXPECTED_ERROR: {e}"
 
 
 def validate(expr_str: str, sigs: dict[str, Signature] | None = None) -> tuple[bool, str | None]:

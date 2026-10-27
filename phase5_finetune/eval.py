@@ -5,6 +5,7 @@ Conditions:
   A  English CoT      — adapter trained on English chain-of-thought
   B  Neuralese        — adapter trained on Neuralese chains
   C  No reasoning     — base model, no fine-tuning, direct question→answer
+  D  Zero-shot CoT    — base model, no fine-tuning, English CoT prompt
 
 For each condition × dataset we measure:
   - Answer accuracy
@@ -34,36 +35,59 @@ from typing import Optional
 from tqdm import tqdm
 
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 from peft import PeftModel
 from datasets import load_dataset
+
+try:
+    import bitsandbytes  # noqa: F401
+    HAVE_BNB = True
+except ImportError:
+    HAVE_BNB = False
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import (
     FINETUNE_MODEL, MAX_SEQ_LEN,
     CHECKPOINTS_DIR, EVAL_RESULTS_PATH, OUTPUTS_DIR,
 )
-from phase3_grammar.parser import validate, get_signatures
+from phase3_grammar.parser import validate, validate_strict, get_signatures
 
 INFERENCE_COMPRESSION_PATH = OUTPUTS_DIR / "inference_compression.json"
 EVAL_SAMPLES_PER_DATASET = 200
 MAX_NEW_TOKENS = 300
+GEN_BATCH_SIZE = 8
+
+
+def _load_kwargs(device: str) -> dict:
+    """Model-load kwargs shared by all eval conditions — 8-bit when
+    bitsandbytes is present. NOTE: 4-bit NF4 decode (seq_len=1 GEMV) is
+    broken on gfx1103/ROCm — generates garbage despite correct full-seq
+    forwards. 8-bit decode works and fits easily (~8GB)."""
+    kwargs = dict(
+        device_map="auto" if device == "cuda" else device,
+        trust_remote_code=True,
+    )
+    if device == "cuda" and HAVE_BNB:
+        kwargs["quantization_config"] = BitsAndBytesConfig(load_in_8bit=True)
+    else:
+        kwargs["dtype"] = torch.bfloat16 if device == "cuda" else torch.float32
+    return kwargs
 
 # ── Dataset configs ───────────────────────────────────────────────────────────
 EVAL_DATASETS = [
     {
-        "name": "gsm8k",
+        "name": "openai/gsm8k",
         "config": "main",
         "split": "test",
         "domain": "in_distribution",
         "extract": "gsm8k",
     },
     {
-        "name": "lighteval/MATH",
-        "config": "all",
+        "name": "HuggingFaceH4/MATH-500",
+        "config": None,
         "split": "test",
         "domain": "ood",
-        "extract": "math",
+        "extract": "math500",
     },
 ]
 
@@ -77,13 +101,13 @@ def load_adapter_model(checkpoint_path: Path, device: str):
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "left"
 
-    base = AutoModelForCausalLM.from_pretrained(
-        FINETUNE_MODEL,
-        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-        device_map="auto" if device == "cuda" else device,
-        trust_remote_code=True,
-    )
+    base = AutoModelForCausalLM.from_pretrained(FINETUNE_MODEL, **_load_kwargs(device))
     base.resize_token_embeddings(len(tokenizer))
+    # The adapter doesn't carry the frozen embedding weights — resize just
+    # mean+noise-initialized the new rows again. Rebuild the same
+    # subword-mean init used at training time (input emb AND untied lm_head).
+    from phase5_finetune.emb_init import init_neuralese_embeddings
+    init_neuralese_embeddings(base, tokenizer)
     model = PeftModel.from_pretrained(base, str(checkpoint_path))
     model.eval()
     return tokenizer, model
@@ -96,22 +120,39 @@ def load_base_model(model_id: str, device: str):
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "left"
 
-    model = AutoModelForCausalLM.from_pretrained(
-        model_id,
-        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-        device_map="auto" if device == "cuda" else device,
-        trust_remote_code=True,
-    )
+    model = AutoModelForCausalLM.from_pretrained(model_id, **_load_kwargs(device))
     model.eval()
     return tokenizer, model
 
 
 # ── Generation ────────────────────────────────────────────────────────────────
 
-def generate_with_reasoning(tokenizer, model, question: str, device: str) -> tuple[str, int]:
-    """Generate with reasoning prompt. Returns (full_text, n_reasoning_tokens)."""
-    prompt = f"<question> {question} </question>\n<reasoning>\n"
-    inputs = tokenizer(prompt, return_tensors="pt", truncation=True,
+def _generate_batch(tokenizer, model, prompts: list[str], max_new: int, device: str) -> list[tuple[str, int]]:
+    """Batched greedy generation. Returns [(full_text, n_new_tokens)] per prompt."""
+    inputs = tokenizer(prompts, return_tensors="pt", padding=True, truncation=True,
+                       max_length=MAX_SEQ_LEN).to(device)
+    input_len = inputs["input_ids"].shape[1]
+    with torch.no_grad():
+        out = model.generate(
+            **inputs,
+            max_new_tokens=max_new,
+            do_sample=False,
+            pad_token_id=tokenizer.pad_token_id,
+        )
+    results = []
+    for i in range(len(prompts)):
+        generated_ids = out[i][input_len:]
+        # Rows pad to the batch's longest generation — count real tokens only
+        n_real = int((generated_ids != tokenizer.pad_token_id).sum())
+        full_text = tokenizer.decode(out[i], skip_special_tokens=True)
+        results.append((full_text, n_real))
+    return results
+
+
+def generate_with_reasoning(tokenizer, model, questions: list[str], device: str) -> list[tuple[str, int]]:
+    """Generate with reasoning prompt (batched). Returns (full_text, n_reasoning_tokens) per q."""
+    prompts = [f"<question> {q} </question>\n<reasoning>\n" for q in questions]
+    inputs = tokenizer(prompts, return_tensors="pt", padding=True, truncation=True,
                        max_length=MAX_SEQ_LEN).to(device)
     input_len = inputs["input_ids"].shape[1]
     with torch.no_grad():
@@ -120,30 +161,33 @@ def generate_with_reasoning(tokenizer, model, question: str, device: str) -> tup
             max_new_tokens=MAX_NEW_TOKENS,
             do_sample=False,
             pad_token_id=tokenizer.pad_token_id,
+            # Stop at the answer close-tag — without this the model drifts
+            # into hallucinated follow-up turns and every gen hits the cap.
+            stop_strings=["</answer>"],
+            tokenizer=tokenizer,
         )
-    generated_ids = out[0][input_len:]
-    n_generated = len(generated_ids)
-    full_text = tokenizer.decode(out[0], skip_special_tokens=True)
-    return full_text, n_generated
+    results = []
+    for i in range(len(prompts)):
+        generated_ids = out[i][input_len:]
+        n_real = int((generated_ids != tokenizer.pad_token_id).sum())
+        full_text = tokenizer.decode(out[i], skip_special_tokens=True)
+        results.append((full_text, n_real))
+    return results
 
 
-def generate_direct(tokenizer, model, question: str, device: str) -> tuple[str, int]:
+def generate_direct(tokenizer, model, questions: list[str], device: str) -> list[tuple[str, int]]:
     """Condition C: direct question→answer with no reasoning scaffold."""
-    prompt = f"Question: {question}\nAnswer:"
-    inputs = tokenizer(prompt, return_tensors="pt", truncation=True,
-                       max_length=MAX_SEQ_LEN).to(device)
-    input_len = inputs["input_ids"].shape[1]
-    with torch.no_grad():
-        out = model.generate(
-            **inputs,
-            max_new_tokens=64,  # no reasoning, just the answer
-            do_sample=False,
-            pad_token_id=tokenizer.pad_token_id,
-        )
-    generated_ids = out[0][input_len:]
-    n_generated = len(generated_ids)
-    full_text = tokenizer.decode(out[0], skip_special_tokens=True)
-    return full_text, n_generated
+    prompts = [f"Question: {q}\nAnswer:" for q in questions]
+    return _generate_batch(tokenizer, model, prompts, 64, device)
+
+
+def generate_cot_baseline(tokenizer, model, questions: list[str], device: str) -> list[tuple[str, int]]:
+    """Condition D: base model zero-shot English CoT — the native-reasoning comparator."""
+    prompts = [
+        f"Question: {q}\nLet's think step by step, then give the final numeric answer."
+        for q in questions
+    ]
+    return _generate_batch(tokenizer, model, prompts, MAX_NEW_TOKENS, device)
 
 
 # ── Answer extraction ─────────────────────────────────────────────────────────
@@ -161,6 +205,16 @@ def extract_direct_answer(generated: str, question: str) -> str:
     after_answer = generated.split("Answer:")[-1].strip() if "Answer:" in generated else generated
     nums = re.findall(r"-?[\d,]+\.?\d*", after_answer.replace(",", ""))
     return nums[0] if nums else after_answer[:50].strip()
+
+
+def extract_cot_answer(generated: str) -> str:
+    """For condition D: last number mentioned in a free-form CoT output."""
+    tail = generated.split("Question:")[-1]
+    m = re.findall(r"answer is[:\s]*\(?\$?(-?[\d,]+\.?\d*)", tail, re.IGNORECASE)
+    if m:
+        return m[-1]
+    nums = re.findall(r"-?[\d,]+\.?\d*", tail.replace(",", ""))
+    return nums[-1] if nums else tail[:50].strip()
 
 
 def normalize_answer(s: str) -> str:
@@ -214,6 +268,9 @@ def load_eval_examples(dataset_cfg: dict, n: int) -> list[dict]:
             # MATH solutions are long; try to extract final numeric answer
             nums = re.findall(r"\\boxed\{([^}]+)\}", gold)
             gold = nums[-1] if nums else gold[:50]
+        elif extract == "math500":
+            q = item["problem"]
+            gold = str(item["answer"])
         else:
             q = item.get("question", "")
             gold = str(item.get("answer", ""))
@@ -236,44 +293,58 @@ def eval_condition(
     """Run one condition on one dataset. Returns metrics dict."""
     correct = 0
     parse_valid = 0
+    parse_valid_strict = 0
     reasoning_token_counts = []
     results = []
 
-    for ex in tqdm(examples, desc=f"  [{condition}] {dataset_name}"):
-        question = ex["question"]
-        gold = ex["gold"]
+    gen_fn = {
+        "A": generate_with_reasoning,
+        "B": generate_with_reasoning,
+        "C": generate_direct,
+        "D": generate_cot_baseline,
+    }[condition]
 
-        if condition == "C":
-            full_text, n_tokens = generate_direct(tokenizer, model, question, device)
-            answer = extract_direct_answer(full_text, question)
-            reasoning = ""
-        else:
-            full_text, n_tokens = generate_with_reasoning(tokenizer, model, question, device)
-            reasoning, answer = extract_blocks(full_text)
+    for start in tqdm(range(0, len(examples), GEN_BATCH_SIZE), desc=f"  [{condition}] {dataset_name}"):
+        batch = examples[start:start + GEN_BATCH_SIZE]
+        outs = gen_fn(tokenizer, model, [ex["question"] for ex in batch], device)
 
-        reasoning_token_counts.append(n_tokens)
+        for ex, (full_text, n_tokens) in zip(batch, outs):
+            question = ex["question"]
+            gold = ex["gold"]
 
-        is_correct = score_answer(answer, gold)
-        if is_correct:
-            correct += 1
+            if condition == "C":
+                answer = extract_direct_answer(full_text, question)
+                reasoning = ""
+            elif condition == "D":
+                answer = extract_cot_answer(full_text)
+                reasoning = full_text
+            else:
+                reasoning, answer = extract_blocks(full_text)
 
-        # Parse validity — only meaningful for condition B
-        chain_valid = False
-        if condition == "B" and reasoning:
-            ok, _ = validate(reasoning, sigs)
-            chain_valid = ok
-            if ok:
-                parse_valid += 1
+            reasoning_token_counts.append(n_tokens)
 
-        results.append({
-            "question": question[:120],
-            "gold": gold,
-            "predicted": answer,
-            "correct": is_correct,
-            "reasoning_tokens": n_tokens,
-            "reasoning_preview": reasoning[:150],
-            "parse_valid": chain_valid,
-        })
+            is_correct = score_answer(answer, gold)
+            if is_correct:
+                correct += 1
+
+            # Parse validity — only meaningful for condition B
+            chain_valid = chain_valid_strict = False
+            if condition == "B" and reasoning:
+                chain_valid, _ = validate(reasoning, sigs)
+                chain_valid_strict, _ = validate_strict(reasoning, sigs)
+                parse_valid += chain_valid
+                parse_valid_strict += chain_valid_strict
+
+            results.append({
+                "question": question[:120],
+                "gold": gold,
+                "predicted": answer,
+                "correct": is_correct,
+                "reasoning_tokens": n_tokens,
+                "reasoning_preview": reasoning[:150],
+                "parse_valid": chain_valid,
+                "parse_valid_strict": chain_valid_strict,
+            })
 
     n = len(examples)
     mean_tokens = sum(reasoning_token_counts) / max(n, 1)
@@ -287,6 +358,7 @@ def eval_condition(
     }
     if condition == "B":
         metrics["parse_validity_rate"] = round(parse_valid / max(n, 1), 4)
+        metrics["parse_validity_strict"] = round(parse_valid_strict / max(n, 1), 4)
 
     return metrics
 
@@ -335,8 +407,8 @@ def main():
                         help="Path to Adapter A (English CoT) checkpoint.")
     parser.add_argument("--base_model", type=str, default=FINETUNE_MODEL,
                         help="Base model ID for condition C (no fine-tuning).")
-    parser.add_argument("--conditions", type=str, default="A,B,C",
-                        help="Comma-separated conditions to run (A, B, C).")
+    parser.add_argument("--conditions", type=str, default="A,B,C,D",
+                        help="Comma-separated conditions to run (A, B, C, D).")
     parser.add_argument("--n", type=int, default=EVAL_SAMPLES_PER_DATASET,
                         help="Examples per dataset.")
     args = parser.parse_args()
@@ -398,15 +470,18 @@ def main():
                 if torch.cuda.is_available():
                     torch.cuda.empty_cache()
 
-        # ── Condition C: No reasoning (base model) ──────────────────────
-        if "C" in conditions_to_run:
-            print(f"\nLoading base model (Condition C: no reasoning)...")
-            tok_c, model_c = load_base_model(args.base_model, device)
-            metrics_c = eval_condition("C", tok_c, model_c, examples, dataset_name, sigs, device)
-            dataset_results["C"] = metrics_c
-            print(f"  [C] accuracy={metrics_c['accuracy']:.1%}  "
-                  f"tokens={metrics_c['mean_reasoning_tokens']:.0f}")
-            del model_c
+        # ── Conditions C + D on one base-model load ─────────────────────
+        base_needed = [c for c in ("C", "D") if c in conditions_to_run]
+        if base_needed:
+            print(f"\nLoading base model (conditions {base_needed})...")
+            tok_base, model_base = load_base_model(args.base_model, device)
+            for cond in base_needed:
+                label = "no reasoning" if cond == "C" else "zero-shot English CoT"
+                metrics = eval_condition(cond, tok_base, model_base, examples, dataset_name, sigs, device)
+                dataset_results[cond] = metrics
+                print(f"  [{cond}] ({label}) accuracy={metrics['accuracy']:.1%}  "
+                      f"tokens={metrics['mean_reasoning_tokens']:.0f}")
+            del model_base
             if torch.cuda.is_available():
                 torch.cuda.empty_cache()
 

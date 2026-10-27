@@ -1,0 +1,10 @@
+{
+  "corpus": "data/corpus/train_final.jsonl",
+  "n": 5639,
+  "loose_valid": 5639,
+  "strict_valid": 5639,
+  "strict_valid_rate": 1.0,
+  "newly_failing_by_error": {},
+  "top_type_error_heads": {},
+  "examples": []
+}

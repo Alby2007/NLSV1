@@ -5,8 +5,10 @@ Input:  data/corpus/train.jsonl
 Output: outputs/checkpoints/
 """
 
+import argparse
 import json
 import logging
+import re
 import sys
 from pathlib import Path
 from typing import Optional
@@ -20,14 +22,25 @@ from transformers import (
     AutoModelForCausalLM,
     TrainingArguments,
     Trainer,
-    DataCollatorForLanguageModeling,
+    DataCollatorForSeq2Seq,
+    BitsAndBytesConfig,
 )
-from peft import LoraConfig, get_peft_model, TaskType
+from peft import LoraConfig, get_peft_model, TaskType, prepare_model_for_kbit_training
 
+try:
+    import bitsandbytes  # noqa: F401
+    HAVE_BNB = True
+except ImportError:
+    HAVE_BNB = False
+
+_REPO_ROOT = Path(__file__).parent.parent
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)-8s %(message)s",
-    handlers=[logging.StreamHandler(), logging.FileHandler("outputs/train.log")],
+    handlers=[
+        logging.StreamHandler(),
+        logging.FileHandler(_REPO_ROOT / "outputs" / "train.log"),
+    ],
 )
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -81,35 +94,89 @@ PROMPT_TEMPLATE = (
     "<answer> {answer} </answer>"
 )
 
+PROMPT_ONLY_TEMPLATE = "<question> {question} </question>\n<reasoning>\n"
 
-def load_corpus() -> list[dict]:
-    with open(TRAIN_CORPUS_PATH, encoding="utf-8") as f:
+
+def load_corpus(corpus_path: Path) -> list[dict]:
+    with open(corpus_path, encoding="utf-8") as f:
         return [json.loads(line) for line in f]
 
 
-def format_example(item: dict) -> str:
+def format_example(item: dict, cot_field: str) -> str:
+    chain = item[cot_field]
+    if cot_field == "original_cot":
+        # strip GSM8K calculator annotations <<400/20=20>>
+        chain = re.sub(r"<<[^>]*>>", "", chain)
     return PROMPT_TEMPLATE.format(
         question=item["question"],
-        neuralese_chain=item["neuralese_chain"],
+        neuralese_chain=chain,
         answer=item["answer"],
     )
 
 
+def format_prompt(item: dict) -> str:
+    return PROMPT_ONLY_TEMPLATE.format(question=item["question"])
+
+
 def tokenize_fn(examples, tokenizer):
-    return tokenizer(
+    enc = tokenizer(
         examples["text"],
         truncation=True,
         max_length=MAX_SEQ_LEN,
         padding=False,
     )
+    prompts = tokenizer(
+        examples["prompt"],
+        truncation=True,
+        max_length=MAX_SEQ_LEN,
+        padding=False,
+    )
+    # mask the prompt — loss on reasoning chain + answer only
+    enc["labels"] = [
+        [-100] * min(len(p), len(ids)) + ids[min(len(p), len(ids)):]
+        for ids, p in zip(enc["input_ids"], prompts["input_ids"])
+    ]
+    return enc
 
 
 def main():
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    logging.info(f"Device: {device}")
+    parser = argparse.ArgumentParser(description="Phase 5 LoRA fine-tune")
+    parser.add_argument("--load-mode", choices=["auto", "4bit", "fp16"], default="auto",
+                        help="4bit = QLoRA via bitsandbytes (~5GB VRAM for 7B); "
+                             "fp16 = full weights (~15GB for 7B — OOMs on 16GB cards)")
+    parser.add_argument("--model", default=FINETUNE_MODEL,
+                        help="override FINETUNE_MODEL (e.g. google/gemma-2-2b)")
+    parser.add_argument("--corpus", type=Path, default=TRAIN_CORPUS_PATH,
+                        help="training corpus jsonl (use train_final.jsonl for the roundtrip-filtered set)")
+    parser.add_argument("--cot", choices=["neuralese_chain", "original_cot"],
+                        default="neuralese_chain",
+                        help="which field to train on: neuralese_chain = adapter B, "
+                             "original_cot = adapter A (English CoT baseline)")
+    parser.add_argument("--out", type=Path, default=CHECKPOINTS_DIR / "final",
+                        help="output dir for the saved adapter (e.g. checkpoints/adapter_B_neuralese/final)")
+    args = parser.parse_args()
 
-    logging.info(f"Loading tokenizer and model: {FINETUNE_MODEL}")
-    tokenizer = AutoTokenizer.from_pretrained(FINETUNE_MODEL, trust_remote_code=True)
+    device = "cuda" if torch.cuda.is_available() else "cpu"  # ROCm also reports as cuda — correct
+    model_name = args.model
+
+    load_mode = args.load_mode
+    if load_mode == "auto":
+        if device == "cuda" and HAVE_BNB:
+            load_mode = "4bit"
+        elif device == "cuda":
+            load_mode = "fp16"
+            logging.warning(
+                "bitsandbytes not found — loading fp16. A 7B model will likely OOM on 16GB; "
+                "install bitsandbytes or pass --model google/gemma-2-2b"
+            )
+        else:
+            load_mode = "fp16"
+    if load_mode == "4bit" and not HAVE_BNB:
+        raise RuntimeError("--load-mode 4bit requires bitsandbytes")
+    logging.info(f"Device: {device} | load_mode: {load_mode} | model: {model_name}")
+
+    logging.info(f"Loading tokenizer and model: {model_name}")
+    tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     tokenizer.padding_side = "right"
@@ -118,13 +185,28 @@ def main():
     num_added = tokenizer.add_tokens(NEURALESE_TOKENS, special_tokens=False)
     logging.info(f"Added {num_added} Neuralese tokens to vocabulary (new vocab size: {len(tokenizer)})")
 
-    model = AutoModelForCausalLM.from_pretrained(
-        FINETUNE_MODEL,
-        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
+    compute_dtype = torch.bfloat16 if device == "cuda" else torch.float32
+    model_kwargs = dict(
         device_map="auto" if device == "cuda" else device,
         trust_remote_code=True,
     )
-    model.gradient_checkpointing_enable()
+    if load_mode == "4bit":
+        model_kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_compute_dtype=torch.bfloat16,
+        )
+    else:
+        model_kwargs["dtype"] = compute_dtype
+    model = AutoModelForCausalLM.from_pretrained(model_name, **model_kwargs)
+    model.config.use_cache = False
+
+    if load_mode == "4bit":
+        # casts norms to fp32 + enables non-reentrant checkpointing & input grads
+        model = prepare_model_for_kbit_training(model)
+    elif device == "cuda":
+        model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 
     if num_added > 0:
         # ── Build centroid lookup: symbol → centroid embedding ────────────────
@@ -153,13 +235,18 @@ def main():
             logging.warning("centroids.npy or ontology.json not found — falling back to subword means")
 
         # Load original tokenizer for subword fallback
-        orig_tok = AutoTokenizer.from_pretrained(FINETUNE_MODEL, trust_remote_code=True)
+        orig_tok = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
         subword_ids_per_token = [orig_tok.encode(sym, add_special_tokens=False) for sym in NEURALESE_TOKENS]
 
         model.resize_token_embeddings(len(tokenizer))
 
         with torch.no_grad():
             emb = model.get_input_embeddings().weight
+            # Untied lm_head on Qwen — the output rows for new tokens get
+            # HF's near-zero mean-resize init, which makes them near-impossible
+            # to emit under frozen LoRA. Init them with the same vectors.
+            out_emb = model.get_output_embeddings().weight
+            same_head = out_emb.data_ptr() == emb.data_ptr()
             emb_dim = emb.shape[1]
             centroid_hits = 0
             subword_hits = 0
@@ -183,6 +270,8 @@ def main():
                     vec = emb[subword_ids].mean(dim=0)
                     subword_hits += 1
                 emb[new_id] = vec
+                if not same_head and new_id < out_emb.shape[0]:
+                    out_emb[new_id] = vec.to(out_emb.dtype)
 
         logging.info(
             f"Embedding init: {centroid_hits} centroid, {subword_hits} subword-mean "
@@ -227,27 +316,32 @@ def main():
     model.print_trainable_parameters()
     logging.info("LoRA applied.")
 
-    corpus = load_corpus()
-    logging.info(f"Corpus size: {len(corpus)}")
+    corpus = load_corpus(args.corpus)
+    logging.info(f"Corpus: {args.corpus} ({len(corpus)} examples, cot={args.cot})")
 
-    texts = [format_example(item) for item in corpus]
-    dataset = Dataset.from_dict({"text": texts})
+    texts = [format_example(item, args.cot) for item in corpus]
+    prompts = [format_prompt(item) for item in corpus]
+    dataset = Dataset.from_dict({"text": texts, "prompt": prompts})
     split = dataset.train_test_split(test_size=EVAL_SPLIT_RATIO, seed=42)
-    train_ds = split["train"].map(lambda x: tokenize_fn(x, tokenizer), batched=True, remove_columns=["text"])
-    eval_ds = split["test"].map(lambda x: tokenize_fn(x, tokenizer), batched=True, remove_columns=["text"])
+    map_kwargs = dict(batched=True, remove_columns=["text", "prompt"])
+    train_ds = split["train"].map(lambda x: tokenize_fn(x, tokenizer), **map_kwargs)
+    eval_ds = split["test"].map(lambda x: tokenize_fn(x, tokenizer), **map_kwargs)
 
-    data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
+    # Seq2Seq collator pads input_ids AND our pre-masked labels correctly
+    data_collator = DataCollatorForSeq2Seq(tokenizer=tokenizer, label_pad_token_id=-100)
 
     training_args = TrainingArguments(
-        output_dir=str(CHECKPOINTS_DIR),
+        output_dir=str(args.out.parent),   # step checkpoints sit next to final/
         num_train_epochs=NUM_EPOCHS,
         per_device_train_batch_size=TRAIN_BATCH_SIZE,
         gradient_accumulation_steps=GRAD_ACCUMULATION_STEPS,
         learning_rate=LEARNING_RATE,
-        fp16=(device == "cuda"),
+        bf16=(device == "cuda"),
         logging_steps=20,
-        eval_strategy="no",
-        save_strategy="no",
+        eval_strategy="epoch",
+        save_strategy="steps",
+        save_steps=100,
+        save_total_limit=3,
         report_to="none",
         dataloader_num_workers=0,
         gradient_checkpointing=True,
@@ -265,7 +359,8 @@ def main():
     logging.info("Starting training...")
     trainer.train()
 
-    final_path = CHECKPOINTS_DIR / "final"
+    final_path = args.out
+    final_path.mkdir(parents=True, exist_ok=True)
     model.save_pretrained(str(final_path))
     tokenizer.save_pretrained(str(final_path))  # saves custom vocab with new tokens
     logging.info(f"Model saved to {final_path}")
